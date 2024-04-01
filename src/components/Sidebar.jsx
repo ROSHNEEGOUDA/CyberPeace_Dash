@@ -20,7 +20,7 @@ const Sidebar = () => {
             </Link>
             <Link to="/module" className="block">
               <div className="rounded-lg bg-blue-600 shadow-md p-2 mb-7 text-center hover: transition duration-300 ease-in-out cursor-pointer transform hover:scale-105">
-                <span className="text-white font-[500] text-[20px]">Modules</span>
+                <span className="text-white font-[500] text-[20px]">Courses</span>
               </div>
             </Link>
             <Link to="/liveclass" className="block">

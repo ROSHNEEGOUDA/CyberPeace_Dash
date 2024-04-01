@@ -44,11 +44,11 @@ const DashboardContent = () => {
   }, [totalCourses, totalCoursesSold, totalTeachers]);
 
   return (
-    <div className="h-full" style={{ backgroundImage: `url(${sprinkleSvg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="h-screen" style={{ backgroundImage: `url(${sprinkleSvg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full p-6">
         
         {/* Total Courses */}
-        <div className="bg-white rounded-lg shadow-md p-6 mt-3" style={{ backgroundImage: `url(${courseImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', opacity: 0.9 }}>
+        <div className="bg-white rounded-lg shadow-md p-6 mt-3 h-[150px] w-[350px]" style={{ backgroundImage: `url(${courseImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', opacity: 0.9 }}>
           <h2 className="text-lg font-semibold mb-4">
             <FontAwesomeIcon icon={faBook} className="mr-2" />
             Total Courses
@@ -59,7 +59,7 @@ const DashboardContent = () => {
         </div>
 
         {/* Total Courses Sold */}
-        <div className="bg-white rounded-lg shadow-md p-6 mt-3" style={{ backgroundImage: `url(${courseImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', opacity: 0.9 }}>
+        <div className="bg-white rounded-lg shadow-md p-6 mt-3  h-[150px] w-[350px]" style={{ backgroundImage: `url(${courseImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', opacity: 0.9 }}>
           <h2 className="text-lg font-semibold mb-4">
             <FontAwesomeIcon icon={faBook} className="mr-2" />
             Total Courses Sold
@@ -70,7 +70,7 @@ const DashboardContent = () => {
         </div>
 
         {/* Total Teachers */}
-        <div className="bg-white rounded-lg shadow-md p-6 mt-3" style={{ backgroundImage: `url(${teacherImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', opacity: 0.9 }}>
+        <div className="bg-white rounded-lg shadow-md p-6 mt-3  h-[150px] w-[350px]" style={{ backgroundImage: `url(${teacherImage})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', opacity: 0.9 }}>
           <h2 className="text-lg font-semibold mb-4">
             <FontAwesomeIcon icon={faChalkboardTeacher} className="mr-2" />
             Total Teachers
@@ -81,28 +81,15 @@ const DashboardContent = () => {
         </div>   
 
         {/* Course Sales Graph */}
-        <div className="bg-white rounded-lg shadow-md p-6 col-span-full lg:col-span-2" style={{ opacity: 0.9 }}>
+        <div className="bg-white rounded-lg shadow-md p-6 col-span-full lg:col-span-2 h-[300px] w-[700px]" style={{ opacity: 0.9 }}>
           <h2 className="text-lg font-semibold mb-4">Course Sales Graph</h2>
           {/* Placeholder for the graph */}
           <div className="h-40 bg-gray-200"></div>
         </div> 
 
         {/* Calendar Section */}
-        <div className="bg-white rounded-lg shadow-md p-6 ml-8 lg:col-span-1 h-full w-[300px] flex justify-center items-center" style={{ opacity: 0.9 }}>
+        <div className="bg-white rounded-lg shadow-md p-6 ml-8 lg:col-span-1 h-[350px] w-[300px] flex justify-center items-center" style={{ opacity: 0.9 }}>
           <MiniCalendar />
-        </div>
-
-        {/* Add Course Section */}
-        <div className="bg-white rounded-lg shadow-md p-6 lg:col-span-1 h-[200px] w-[200px] flex flex-col justify-center items-center" style={{ opacity: 0.9 }}>
-          <h2 className="text-lg font-semibold mb-4">
-            <FontAwesomeIcon icon={faUpload} className="mr-2" />
-            Add Course
-          </h2>
-          {/* Form or component for adding a course */}
-          <form className="flex flex-col items-center w-full">
-            {/* Form fields go here */}
-            <button className="bg-blue-600 text-white py-2 px-3 mt-3 rounded-md hover:bg-blue-700 w-32">Add Course</button>
-          </form>
         </div>
       </div>
     </div>
