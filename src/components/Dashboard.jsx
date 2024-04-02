@@ -5,6 +5,7 @@ import MiniCalendar from './calander';
 import courseImage from '../assets/course.png'; // Import the course image
 import teacherImage from '../assets/teacher2.jpg'; // Import the teacher image
 import sprinkleSvg from '../assets/Sprinkle.svg';
+import QueriesSection from './QueriesSection';
 
 const DashboardContent = () => {
   const [totalCourses, setTotalCourses] = useState(0);
@@ -44,7 +45,7 @@ const DashboardContent = () => {
   }, [totalCourses, totalCoursesSold, totalTeachers]);
 
   return (
-    <div className="h-screen" style={{ backgroundImage: `url(${sprinkleSvg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="h-screen bg-slate-100" >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full p-6">
         
         {/* Total Courses */}
@@ -88,9 +89,7 @@ const DashboardContent = () => {
         </div> 
 
         {/* Calendar Section */}
-        <div className="bg-white rounded-lg shadow-md p-6 ml-8 lg:col-span-1 h-[350px] w-[300px] flex justify-center items-center" style={{ opacity: 0.9 }}>
-          <MiniCalendar />
-        </div>
+        <QueriesSection />
       </div>
     </div>
   );
