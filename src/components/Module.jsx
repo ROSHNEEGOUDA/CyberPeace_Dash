@@ -10,18 +10,18 @@ function Home() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDiscussionForm, setShowDiscussionForm] = useState(false);
 
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-    setShowDiscussionForm(false); // Close discussion form when toggling dropdown
-  };
+    const toggleDropdown = () => {
+      setShowDropdown(!showDropdown);
+      setShowDiscussionForm(false); // Close discussion form when toggling dropdown
+    };
 
-  const handleOptionClick = (option) => {
-    console.log("Selected option:", option);
-    setShowDropdown(false);
-    if (option === "New") {
-      setShowDiscussionForm(true);
-    }
-  };
+    const handleOptionClick = (option) => {
+      console.log("Selected option:", option);
+      setShowDropdown(false);
+      if (option === "New") {
+        setShowDiscussionForm(true);
+      }
+    };
 
   return (
     <div className="flex flex-col relative" style={{ width: "100%", height: "100vh", backgroundImage: `url(${sprinkleSvg})`, backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0 }}>

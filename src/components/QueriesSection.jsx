@@ -12,7 +12,7 @@ const QueriesSection = () => {
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 h-60 max-w-sm mx-auto">
+    <div>
       <h2 className="text-lg font-semibold mb-4 flex items-center">
         <FontAwesomeIcon icon={faQuestionCircle} className="mr-2 text-blue-600" />
         Queries
