@@ -16,7 +16,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <div className={`bg-blue-100 w-64 md:h-full ${isOpen ? 'block' : 'hidden'} md:block`}>
         <div className="p-4">
-          <h1 className="text-black text-center text-2xl font-bold mb-6">Menu</h1>
+          <h1 className="text-black text-center text-[20px] font-[700] mb-6">Cyber Security</h1>
           <div>
             <Link to="/" className="block">
               <div className="flex items-center rounded-lg bg-blue-600 shadow-md p-2 mb-7 text-center hover:transition duration-300 ease-in-out cursor-pointer transform hover:scale-105">
