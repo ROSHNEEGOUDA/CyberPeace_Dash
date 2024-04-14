@@ -23,7 +23,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto p-6">
+    <div className="max-w-screen-lg mx-auto p-6 h-[100vh]">
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
           <img src={profilePicture} alt="Profile" className='h-[200px] w-[400px]'/> {/* Insert the profile picture */}
