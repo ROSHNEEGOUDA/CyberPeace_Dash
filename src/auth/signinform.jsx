@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import { FaGoogle, FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 function SignInForm() {
-  const [state, setState] = React.useState({
+  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [state, setState] = useState({
     email: "",
     password: ""
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -15,16 +20,17 @@ function SignInForm() {
     });
   };
 
-  const handleOnSubmit = evt => {
-    evt.preventDefault();
-
-    const { email, password } = state;
-    alert(`You are login with email: ${email} and password: ${password}`);
-
-    setState({
-      email: "",
-      password: ""
-    });
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = state; // Destructure email and password from state
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // Store the email in session storage
+      sessionStorage.setItem('userEmail', email);
+      navigate("/Dashboard");
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
   };
 
   return (
@@ -57,8 +63,9 @@ function SignInForm() {
           value={state.password}
           onChange={handleChange}
         />
-        <a href="#">Forgot your password?</a>
+        <a href="">Forgot your password?</a>
         <button>Sign In</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
     </div>
   );

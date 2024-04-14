@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import { FaGoogle, FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 function SignUpForm() {
-  const [state, setState] = React.useState({
+  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [state, setState] = useState({
     name: "",
     email: "",
     password: ""
@@ -16,19 +20,35 @@ function SignUpForm() {
     });
   };
 
-  const handleOnSubmit = evt => {
-    evt.preventDefault();
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
 
     const { name, email, password } = state;
-    alert(
-      `You are signing up with name: ${name}, email: ${email}, and password: ${password}`
-    );
 
-    setState({
-      name: "",
-      email: "",
-      password: ""
-    });
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Invalid email format');
+      return;
+    }
+
+    // Password match validation
+    if (password !== state.confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log(user);
+      navigate('/');
+      console.log('signed up');
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    }
   };
 
   return (
@@ -67,6 +87,13 @@ function SignUpForm() {
           value={state.password}
           onChange={handleChange}
           placeholder="Password"
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          value={state.confirmPassword}
+          onChange={handleChange}
+          placeholder="Confirm Password"
         />
         <button>Sign Up</button>
       </form>
