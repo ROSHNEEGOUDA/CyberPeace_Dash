@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import Footer from "./components/footer";
+// import Footer from "./components/footer";
 
 const MainLayout = ({ children }) => {
   return (
@@ -12,7 +12,7 @@ const MainLayout = ({ children }) => {
         <Sidebar className="h-full" />
         <main className="flex-grow">{children}</main>
       </div>
-      <Footer /> 
+      {/* <Footer />  */}
     </div>
   );
 };

@@ -38,11 +38,11 @@ import '../index.css';
       <div className="container mx-auto mt-8 px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {/* Card 1 */}
-          <Link to="/cm">
+          <Link to="/cm1">
             <div className="max-w-md bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
               <img src={course1} alt="Course1" className="w-full h-64 object-cover" />
               <div className="p-4">
-                <h2 className="text-xl font-bold mb-2">Course 1</h2>
+                <h2 className="text-xl font-bold mb-2">Module 1</h2>
                 <p className="text-gray-700">This is the First course that we want to sell to you</p>
               </div>
             </div>
@@ -53,7 +53,7 @@ import '../index.css';
             <div className="max-w-md bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
               <img src={course2} alt="Course2" className="w-full h-64 object-cover" />
               <div className="p-4">
-                <h2 className="text-xl font-bold mb-2">Course 2</h2>
+                <h2 className="text-xl font-bold mb-2">Module 2</h2>
                 <p className="text-gray-700">This is the Second course that we want to sell to you</p>
               </div>
             </div>
@@ -64,7 +64,7 @@ import '../index.css';
             <div className="max-w-md bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
               <img src={course3} alt="Course3" className="w-full h-64 object-cover" />
               <div className="p-4">
-                <h2 className="text-xl font-bold mb-2">Course 3</h2>
+                <h2 className="text-xl font-bold mb-2">Module 3</h2>
                 <p className="text-gray-700">This is the Third course that we want to sell to you</p>
               </div>
             </div>
@@ -75,7 +75,7 @@ import '../index.css';
             <div className="max-w-md bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
               <img src={Course4} alt="Course4" className="w-full h-64 object-cover" />
               <div className="p-4">
-                <h2 className="text-xl font-bold mb-2">Course 4</h2>
+                <h2 className="text-xl font-bold mb-2">Module 4</h2>
                 <p className="text-gray-700">This is the Fourth course that we want to sell to you</p>
               </div>
             </div>
@@ -86,7 +86,7 @@ import '../index.css';
             <div className="max-w-md bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
               <img src={course5} alt="Course5" className="w-full h-64 object-cover" />
               <div className="p-4">
-                <h2 className="text-xl font-bold mb-2">Course 5</h2>
+                <h2 className="text-xl font-bold mb-2">Module 5</h2>
                 <p className="text-gray-700">This is the Fifth course that we want to sell to you</p>
               </div>
             </div>
@@ -97,7 +97,7 @@ import '../index.css';
             <div className="max-w-md bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
               <img src={course6} alt="Course6" className="w-full h-64 object-cover" />
               <div className="p-4">
-                <h2 className="text-xl font-bold mb-2">Course 6</h2>
+                <h2 className="text-xl font-bold mb-2">Module 6</h2>
                 <p className="text-gray-700">This is the Sixth course that we want to sell to you</p>
               </div>
             </div>

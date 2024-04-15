@@ -3,12 +3,25 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import logo from '/src/assets/logo.png';
+import { auth } from '../firebase';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    auth.signOut().then(() => {
+      // Sign-out successful.
+      console.log("User logged out");
+      // Redirect to the sign-in page
+      window.location.href = "/";
+    }).catch((error) => {
+      // An error happened.
+      console.error(error);
+    });
   };
 
   return (
@@ -49,7 +62,7 @@ const Navbar = () => {
         </Link>
         
         {/* Logout Button */}
-        <button className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-700">
+        <button className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-700" onClick={handleLogout}>
           <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
           Logout
         </button>
@@ -62,7 +75,7 @@ const Navbar = () => {
             <FontAwesomeIcon icon={faUser} className="text-white mr-2" />
             Profile
           </Link>
-          <button className="block px-4 py-3 hover:bg-blue-700 w-full text-left" onClick={toggleDropdown}>
+          <button className="block px-4 py-3 hover:bg-blue-700 w-full text-left" onClick={handleLogout}>
             <FontAwesomeIcon icon={faSignOutAlt} className="text-white mr-2" />
             Logout
           </button>

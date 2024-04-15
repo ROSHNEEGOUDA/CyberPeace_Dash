@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
-import { FaGoogle, FaGithub, FaLinkedinIn } from "react-icons/fa";
 
 function SignUpForm() {
   const navigate = useNavigate(); // Initialize useNavigate hook
   const [state, setState] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
   });
 
   const handleChange = evt => {
@@ -23,27 +23,20 @@ function SignUpForm() {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, email, password } = state;
-
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      alert('Invalid email format');
-      return;
-    }
+    const { name, email, password, confirmPassword } = state;
 
     // Password match validation
-    if (password !== state.confirmPassword) {
+    if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log(user);
+      // Store the name and email in session storage
+      sessionStorage.setItem('userName', name);
+      sessionStorage.setItem('userEmail', email);
       navigate('/');
-      console.log('signed up');
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -55,18 +48,6 @@ function SignUpForm() {
     <div className="form-container sign-up-container">
       <form onSubmit={handleOnSubmit}>
         <h1>Create Account</h1>
-        {/* <div className="social-container">
-          <a href="#" className="social">
-            <FaGoogle />
-          </a>
-          <a href="#" className="social">
-            <FaGithub />
-          </a>
-          <a href="#" className="social">
-            <FaLinkedinIn />
-          </a>
-        </div>
-        <span>or use your email for registration</span> */}
         <input
           type="text"
           name="name"

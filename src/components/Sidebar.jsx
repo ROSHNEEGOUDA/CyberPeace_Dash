@@ -18,7 +18,7 @@ const Sidebar = () => {
         <div className="p-4">
           <h1 className="text-black text-center text-[20px] font-[700] mb-6">Cyber Security</h1>
           <div>
-            <Link to="/" className="block">
+            <Link to="/Dashboard" className="block">
               <div className="flex items-center rounded-lg bg-blue-600 shadow-md p-2 mb-7 text-center hover:transition duration-300 ease-in-out cursor-pointer transform hover:scale-105">
                 <img src={dashlogo} alt="Dashboard" className="h-5 w-5 ml-7 mr-3 filter brightness-100" style={{ filter: 'brightness(70%)' }} />
                 <span className="text-white font-[500] text-[20px]">Dashboard</span>
