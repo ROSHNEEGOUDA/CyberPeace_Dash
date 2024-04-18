@@ -50,7 +50,7 @@ const Profile = () => {
     <div className="max-w-screen-lg mx-auto p-6 h-[100vh]">
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
-          <img src={profilePicture} alt="Profile" className='h-[200px] w-[400px]'/> {/* Insert the profile picture */}
+          <img src={profilePicture} alt="Profile" className='h-[200px] w-[360px]'/> {/* Insert the profile picture */}
         </div>
         <h2 className="text-lg font-semibold mb-2">
           <FontAwesomeIcon icon={faUser} className="text-black mr-2" />
