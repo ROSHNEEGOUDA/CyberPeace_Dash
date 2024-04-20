@@ -49,13 +49,13 @@ function Home() {
 
   return (
     <div className="flex flex-col relative" style={{ width: "100%", height: "100%", backgroundImage: `url(${sprinkleSvg})`, backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0 }}>
-      <div className={`absolute top-${isTabletOrMobile ? '5' : '16'} right-5 md:right-${isTabletOrMobile ? '5' : '6'} z-10 flex flex-col md:flex-row items-center justify-center`}>
+      <div className={`absolute top-${isTabletOrMobile ? '5' : '16'} right-5 md:right-${isTabletOrMobile ? '5' : '6'} z-10 mt-16 flex flex-col md:flex-row items-center justify-center`}>
         <button className="bg-blue-600 text-white py-1 px-4 rounded-md mx-7 hover:bg-blue-700 flex items-center transition-colors duration-300" onClick={toggleDropdown}>
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
           Add Course
         </button>
         {showDropdown && (
-          <div className="absolute top-12 md:top-16 right-5 md:right-6 bg-white shadow-md py-2 px-14 rounded-md z-20">
+          <div className="absolute top-12 md:top-12 bg-white shadow-md py-2 px-14 rounded-md z-20">
             <p className="cursor-pointer hover:text-blue-600 mb-2" onClick={() => handleOptionClick("New")}>New</p>
             <p className="cursor-pointer hover:text-blue-600 mb-2" onClick={() => handleOptionClick("Update")}>Update</p>
             <p className="cursor-pointer hover:text-blue-600" onClick={() => handleOptionClick("Delete")}>Delete</p>
