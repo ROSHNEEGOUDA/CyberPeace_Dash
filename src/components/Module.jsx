@@ -71,14 +71,14 @@ function Home() {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1024 });
 
   return (
-    <div className="flex flex-col relative mb-5" style={{ width: "100%", height: "100%", backgroundImage: `url(${sprinkleSvg})`, backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0 }}>
-      <div className={`absolute top-${isTabletOrMobile ? '5' : '16'} right-5 md:right-${isTabletOrMobile ? '5' : '6'} z-10 mt-4 flex flex-col md:flex-row items-center justify-center`}>
+    <div className="flex flex-col relative mb-5 bg-slate-100 h-full" >
+      <div className={`absolute top-${isTabletOrMobile ? '5' : '9'} right-5 md:right-${isTabletOrMobile ? '5' : '9'} z-10 mt-4 flex flex-col md:flex-row items-center justify-center`}>
         <button className="bg-blue-600 text-white py-1 px-4 rounded-md mx-7 hover:bg-blue-700 flex items-center transition-colors duration-300" onClick={toggleDropdown}>
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
           Add Course
         </button>
         {showDropdown && (
-          <div className="absolute top-12 md:top-12 bg-white shadow-md py-2 px-14 rounded-md z-20">
+          <div className="absolute top-12 md:top-12 bg-blue-200 shadow-lg py-2 px-14 rounded-md z-20">
             <p className="cursor-pointer hover:text-blue-600 mb-2" onClick={() => handleOptionClick("New")}>New</p>
             <p className="cursor-pointer hover:text-blue-600 mb-2" onClick={() => handleOptionClick("Update")}>Update</p>
             <p className="cursor-pointer hover:text-blue-600" onClick={() => handleOptionClick("Delete")}>Delete</p>
@@ -131,9 +131,9 @@ function Home() {
       )}
 
       <div className="container mx-auto px-4 relative z-0 flex flex-col justify-center items-center">
-        <div className="text-center my-10">
-          <h1 className="text-3xl md:text-4xl font-bold font-Helvetica text-white mt-16">Start your cybersecurity learning</h1>
-          <h2 className="text-lg md:text-xl font-bold font-Arial text-white mt-3">Choose your path from the courses offered by Cyberpeace Foundation</h2>
+        <div className="text-center mb-14">
+          <h1 className="text-3xl md:text-4xl font-bold font-Helvetica text-black mt-16">Start your cybersecurity learning</h1>
+          <h2 className="text-lg md:text-xl font-bold font-Arial text-black mt-3">Choose your path from the courses offered by Cyberpeace Foundation</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-2 md:mt-3">
@@ -148,7 +148,7 @@ function Home() {
           ))}
 
           <Link to="/Featuredcompf" className="block">
-            <div className="overflow-hidden bg-white shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group">
+            <div className="overflow-hidden bg-blue-300 shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group">
               <img src={cf} alt="Computer Fundamentals" className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h2 className="text-xl font-bold mb-2">Computer Fundamentals</h2>
@@ -158,7 +158,7 @@ function Home() {
           </Link>
 
           <Link to="/Featuredcyber" className="block">
-            <div className="overflow-hidden bg-white shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group">
+            <div className="overflow-hidden bg-blue-300 shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group">
               <img src={cybsec} alt="CyberSecurity Fundamentals" className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h2 className="text-xl font-bold mb-2">CyberSecurity Fundamentals</h2>

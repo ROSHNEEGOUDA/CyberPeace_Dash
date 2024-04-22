@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -65,25 +65,16 @@ function Featuredcompf() {
 
   const allCourses = [...initialCourses, ...discussions];
 
-  useEffect(() => {
-    document.title = 'Computer Fundamentals';
-    const originalBackground = document.body.className;
-    document.body.className = 'bg-gradient-animation';
-    return () => {
-      document.body.className = originalBackground;
-    };
-  }, []);
-
   return (
-    <div>
+    <div className="bg-slate-100 min-h-screen">
       {/* Main Content */}
-      <div className={`absolute top-16 right-6 z-10 mt-16 flex flex-col md:flex-row items-center justify-center`}>
+      <div className={`absolute top-10 right-6 z-10 mt-16 flex flex-col md:flex-row items-center justify-center `}>
         <button className="bg-blue-600 text-white py-1 px-4 rounded-md mx-7 hover:bg-blue-700 flex items-center transition-colors duration-300" onClick={toggleDropdown}>
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
           Add Module
         </button>
         {showDropdown && (
-          <div className="absolute top-12 md:top-12 bg-white shadow-md py-2 px-14 rounded-md z-20">
+          <div className="absolute top-12 md:top-10 bg-blue-200 shadow-lg py-2 px-14 rounded-md z-20">
             <p className="cursor-pointer hover:text-blue-600 mb-2" onClick={() => handleOptionClick("New")}>New</p>
             <p className="cursor-pointer hover:text-blue-600 mb-2" onClick={() => handleOptionClick("Delete")}>Delete</p>
           </div>
@@ -139,7 +130,7 @@ function Featuredcompf() {
       {/* Main Content */}
       <div>
         <center>
-          <h1 className="text-5xl mt-10 font-Helvetica font-bold text-white">
+          <h1 className="text-5xl mt-10 font-Helvetica font-bold text-black">
             Computer Fundamentals
           </h1>
           <h2 className="text-2xl mt-5 font-Helvetica text-black font-[500]">
@@ -164,7 +155,7 @@ function Featuredcompf() {
           ))}
 
           {/* Hardcoded Course Cards */}
-          <Link to="/cm1" className="w-11/12 ml-6 block bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
+          <Link to="/cm1" className="w-11/12 ml-6 block bg-blue-200 shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
             <div className="p-4 flex items-center">
               <div className="flex-1">
                 <h2 className="text-xl font-bold mb-2">Module 1</h2>
@@ -175,7 +166,7 @@ function Featuredcompf() {
           </Link>
 
           {/* Card 2 */}
-          <Link to="/cm" className="w-11/12 ml-6 block bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
+          <Link to="/cm" className="w-11/12 ml-6 block bg-blue-200 shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
             <div className="p-4 flex items-center">
               <div className="flex-1">
                 <h2 className="text-xl font-bold mb-2">Module 2</h2>
@@ -186,7 +177,7 @@ function Featuredcompf() {
           </Link>
 
           {/* Card 3 */}
-          <Link to="/cm" className="w-11/12 ml-6 block bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
+          <Link to="/cm" className="w-11/12 ml-6 block bg-blue-200 shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
             <div className="p-4 flex items-center">
               <div className="flex-1">
                 <h2 className="text-xl font-bold mb-2">Module 3</h2>
