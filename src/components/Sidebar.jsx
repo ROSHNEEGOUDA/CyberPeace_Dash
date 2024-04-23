@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import dashlogo from "../assets/dashboard.svg";
 import { useMediaQuery } from "react-responsive";
+import Profile from "./Profile";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,8 +52,7 @@ const Sidebar = () => {
       {(isOpen || !isMobile) && (
         <div className={`bg-blue-100 w-64 md:h-full md:block z-10 ${isMobile ? 'absolute top-0 left-0 h-full' : ''}`}>
           <div className="p-4">
-            <h1 className="text-black text-center text-[20px] font-[700] mb-6">
-              Cyber Security
+            <h1 className="text-black text-center text-[20px] font-[700] mb-10">
             </h1>
             <div>
               <Link to="/Dashboard" className="block" onClick={() => handleLinkClick("/Dashboard")}>

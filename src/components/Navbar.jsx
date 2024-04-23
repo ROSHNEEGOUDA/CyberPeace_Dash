@@ -43,17 +43,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      <div className="hidden md:flex flex-grow md:space-x-2 justify-center mt-4 md:mt-0">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="bg-white border border-gray-300 px-3 py-1 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-        />
-        <button className="bg-blue-500 text-white px-4 py-1 rounded-r-md hover:bg-blue-700">
-          Search
-        </button>
-      </div>
-
       <div className="flex flex-col md:flex-row items-center mt-4 md:mt-0 hidden md:flex">
         <Link to="/profile" className="mr-4">
           <div className="flex items-center justify-center rounded-full bg-blue-500 p-4  hover:text-blue-500 transition duration-300 ease-in-out cursor-pointer transform hover:scale-110">
