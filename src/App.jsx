@@ -9,7 +9,7 @@ import Auth from './auth/testpage';
 import Featuredcompf from './components/Featuredcompf';
 import Cm1 from './components/Cm1';
 import CoursePage from './components/CoursePage';
-import Course from './components/Module';
+import Course from './components/Course';
 import CourseDetails from './components/CoursePage';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
             <Route path="/Dashboard" element={<Layout><DashboardContent/></Layout>} />
             <Route path="/liveclass" element={<Layout><HomePage/></Layout>} />
             <Route path="/Liveroom/:roomId" element={<Layout><LivePage/></Layout>} />
-            <Route path="/module" element={<Layout><Course/></Layout>} />
+            <Route path="/course" element={<Layout><Course/></Layout>} />
             <Route path="/profile" element={<Layout><Profile/></Layout>} />
             <Route path="/:title" element={<Layout><CoursePage/></Layout>} />
             <Route path="/course/:id" element={<Layout><CourseDetails/></Layout>} />

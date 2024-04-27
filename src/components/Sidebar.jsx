@@ -69,7 +69,7 @@ const Sidebar = () => {
                 </div>
               </Link>
               {/* Other sidebar links */}
-              <Link to="/module" className="block" onClick={() => handleLinkClick("/module")}>
+              <Link to="/course" className="block" onClick={() => handleLinkClick("/module")}>
                 <div className={`flex items-center rounded-lg p-2 mb-7 text-center cursor-pointer transform ${activeLink === "/module" ? 'bg-blue-400' : ''}`}>
                   <FontAwesomeIcon
                     icon={faBook}
