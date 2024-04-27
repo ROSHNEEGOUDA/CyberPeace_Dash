@@ -15,29 +15,30 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import cf from "../assets/cf.avif";
 import cybsec from "../assets/cybsec.jpg";
 
-function Home() {
+function Course() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDiscussionForm, setShowDiscussionForm] = useState(false);
-  const [discussions, setDiscussions] = useState([]); // State to hold discussions
-  const [selectedCourseId, setSelectedCourseId] = useState(null); // State to hold the selected course for deletion
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // State to toggle delete confirmation form
-  const navigate = useNavigate(); // Navigation hook
+  const [discussions, setDiscussions] = useState([]);
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCourses();
-  }, []); // Fetch courses when component mounts
+  }, []);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
     setShowDiscussionForm(false);
   };
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option, courseId) => {
     setShowDropdown(false);
     if (option === "New") {
       setShowDiscussionForm(true);
     } else if (option === "Delete") {
       setShowDeleteConfirmation(true);
+      setSelectedCourseId(courseId);
     }
   };
 
@@ -47,11 +48,10 @@ function Home() {
       const coursesSnapshot = await getDocs(coursesCollection);
       const coursesData = [];
 
-      // Iterate through each course document
       for (const doc of coursesSnapshot.docs) {
         const course = doc.data();
-        const imageUrl = await getImageUrl(course.imageUrl); // Fetch image URL
-        coursesData.push({ id: doc.id, ...course, imageUrl }); // Add imageUrl to course object
+        const imageUrl = await getImageUrl(course.imageUrl);
+        coursesData.push({ id: doc.id, ...course, imageUrl });
       }
 
       setDiscussions(coursesData);
@@ -87,10 +87,11 @@ function Home() {
       };
 
       const docRef = await addDoc(collection(firestore, "courses"), newCourse);
+      const courseId = docRef.id; // Get the generated course ID
 
       setDiscussions((prevDiscussions) => [
         ...prevDiscussions,
-        { id: docRef.id, ...newCourse },
+        { id: courseId, ...newCourse }, // Include the generated course ID in the course data
       ]);
 
       event.target.reset();
@@ -103,15 +104,12 @@ function Home() {
   const deleteCourse = async () => {
     if (selectedCourseId !== null) {
       try {
-        // Delete course from Firestore
         await deleteDoc(doc(firestore, "courses", selectedCourseId));
 
-        // Update state to remove the deleted course
         setDiscussions((prevDiscussions) =>
           prevDiscussions.filter((course) => course.id !== selectedCourseId)
         );
 
-        // Hide delete confirmation
         setShowDeleteConfirmation(false);
         setSelectedCourseId(null);
       } catch (error) {
@@ -124,7 +122,6 @@ function Home() {
 
   return (
     <div className="flex flex-col relative mb-5 bg-slate-100 h-full">
-      {/* Dropdown */}
       <div
         className={`absolute top-${
           isTabletOrMobile ? "5" : "9"
@@ -132,7 +129,6 @@ function Home() {
           isTabletOrMobile ? "5" : "9"
         } z-10 mt-4 flex flex-col md:flex-row items-center justify-center`}
       >
-        {/* Dropdown Button */}
         <button
           className="bg-blue-600 text-white py-1 px-4 rounded-md mx-7 hover:bg-blue-700 flex items-center transition-colors duration-300"
           onClick={toggleDropdown}
@@ -140,12 +136,11 @@ function Home() {
           <FontAwesomeIcon icon={faPlus} className="mr-2" />
           Add Course
         </button>
-        {/* Dropdown Menu */}
         {showDropdown && (
           <div className="absolute top-12 md:top-12 bg-blue-200 shadow-lg py-2 px-14 rounded-md z-20">
             <p
               className="cursor-pointer hover:text-blue-600 mb-2"
-              onClick={() => handleOptionClick("New")}
+              onClick={() => handleOptionClick("New", null)}
             >
               New
             </p>
@@ -165,20 +160,17 @@ function Home() {
         )}
       </div>
 
-      {/* Add Course Form */}
       {showDiscussionForm && (
         <div
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-md p-6 rounded-md z-20 border-black mt-8"
           style={{ width: "90%", maxWidth: "600px" }}
         >
-          {/* Close Button */}
           <button
             className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
             onClick={() => setShowDiscussionForm(false)}
           >
             <FontAwesomeIcon icon={faTimes} />
           </button>
-          {/* Form */}
           <h2 className="text-lg font-semibold mb-4">Add Course</h2>
           <form onSubmit={handleFormSubmit}>
             <div className="mb-4">
@@ -234,13 +226,11 @@ function Home() {
         </div>
       )}
 
-      {/* Delete Confirmation */}
       {showDeleteConfirmation && (
         <div
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-md p-6 rounded-md z-20 border-black mt-8"
           style={{ width: "90%", maxWidth: "600px" }}
         >
-          {/* Close Button */}
           <button
             className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
             onClick={() => setShowDeleteConfirmation(false)}
@@ -278,7 +268,6 @@ function Home() {
         </div>
       )}
 
-      {/* Course Cards */}
       <div className="container mx-auto px-4 relative z-0 flex flex-col justify-center items-center">
         <div className="text-center mb-14">
           <h1 className="text-3xl md:text-4xl font-bold font-Helvetica text-black mt-16">
@@ -288,16 +277,14 @@ function Home() {
             Choose your path from the courses offered by Cyberpeace Foundation
           </h2>
         </div>
-
-        {/* Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-2 md:mt-3">
           {discussions.map((discussion, index) => (
             <div
               key={index}
               className="block"
               onClick={() =>
-                navigate(`/${discussion.id}`, {
-                  state: { title: discussion.title },
+                navigate(`/course/${discussion.id}`, {
+                  state: { id: discussion.id, title: discussion.title },
                 })
               }
             >
@@ -314,9 +301,8 @@ function Home() {
               </div>
             </div>
           ))}
-
-<Link to="/Featuredcompf" className="block">
-            <div className="overflow-hidden bg-blue-300 shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group">
+          <Link to="/Featuredcompf" className="block">
+            <div className="overflow-hidden bg-blue-300 shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group cursor-pointer">
               <img src={cf} alt="Computer Fundamentals" className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h2 className="text-xl font-bold mb-2">Computer Fundamentals</h2>
@@ -324,9 +310,8 @@ function Home() {
               </div>
             </div>
           </Link>
-
           <Link to="/Featuredcyber" className="block">
-            <div className="overflow-hidden bg-blue-300 shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group">
+            <div className="overflow-hidden bg-blue-300 shadow-md rounded-md transition duration-300 ease-in-out transform hover:scale-105 group cursor-pointer">
               <img src={cybsec} alt="CyberSecurity Fundamentals" className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h2 className="text-xl font-bold mb-2">CyberSecurity Fundamentals</h2>
@@ -334,11 +319,10 @@ function Home() {
               </div>
             </div>
           </Link>
-
         </div>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default Course;
