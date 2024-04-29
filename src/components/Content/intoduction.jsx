@@ -1,122 +1,158 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { serverTimestamp, collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { firestore } from "../../firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const IntroductionContent = () => {
+const IntroductionContent = ({ title, description }) => {
   return (
     <div>
-      <h2 className="text-[23px] font-semibold mb-4 text-blue-600 hover:text-blue-900 text-center">
-        I. Overview of Cybersecurity
+      <h2 className="text-xl font-semibold mb-4 text-blue-600 hover:text-blue-900 text-center">
+        {title}
       </h2>
-      <p className="text-black text-left font-[500] text-[17px]">
-              What is Cybersecurity? Imagine your home is filled with your most
-              important things: photos, keepsakes, financial documents, and
-              things you use every day. You wouldn't leave your doors and
-              windows wide open, would you? You'd want them locked to keep the
-              wrong people out!
-            </p>
-            <br />
-            <p className="text-black text-left font-[500] text-[17px]">
-              In the digital world: Your data is your treasure: This includes
-              your personal information, photos, banking details, basically
-              everything stored on your computer or that you share online.
-              Computers and networks are the doors and windows: Your computer,
-              phone, and the internet connection are how you access this digital
-              world, and also how others might try to get in. Cybersecurity is
-              your protection: It's like the locks, the alarm system, and all
-              the ways you keep your home (and valuable stuff) safe.
-              Cybersecurity tools and practices protect your digital treasures
-              from being stolen, damaged, or used by those who shouldn't have
-              access.
-            </p>
-            <br />
-            <p className="text-black text-left font-[500] text-[17px]">
-              So, in real context… Cybersecurity is the practice of protecting
-              systems, networks, and data from digital attacks. These
-              cyberattacks are constantly evolving, but some of the most common
-              goals include: Unauthorized access: When someone gains access to a
-              system or data they shouldn't have. This is like someone breaking
-              into your home. Theft: Stealing sensitive information, such as
-              financial data, personal details, or company secrets. Damage:
-              Intentionally harming or deleting data, or disrupting the
-              operations of computer systems. Imagine a burglar smashing things
-              in your home for no reason. Disruption: Preventing businesses,
-              services, or even governments from functioning properly through
-              attacks on their digital infrastructure.
-            </p>
-            <br />
-            <p className="text-black text-left font-[500] text-[17px]">
-              Key Points to Remember Cybersecurity is similar to protecting your
-              physical belongings, but in the digital world. It utilizes a
-              combination of technologies, processes, and good practices to
-              defend against cyber threats. Due to our increasing reliance on
-              technology, cybersecurity is more important than ever for
-              individuals, businesses, and entire nations.np
-            </p><br />
-      {/* Additional content goes here */}
-    </div>
-  );
-};
-
-const ImportanceContent = () => {
-  return (
-    <div>
-      <h2 className="text-[23px] font-semibold mb-4 text-center text-blue-600 hover:text-blue-900">
-        II. Importance of Cybersecurity in the Digital Age
-      </h2>
-      <p className="text-black text-left font-[500] text-[17px]">
-        Why Cybersecurity Matters? We live in a world where almost everything
-        important to us has a digital version. We shop online, bank online,
-        even connect with our friends and doctors through computers and the
-        internet. Cybercriminals, just like burglars, want to exploit this for
-        their own gain. Cybersecurity is the way we defend ourselves against:
-        Identity theft: When someone steals your details (like your name and
-        bank information) to pretend to be you. Viruses and malware: Nasty
-        programs that can mess up your computer, steal your information, or
-        even spy on you. Hackers: People who try to break into computer systems
-        to steal information or cause trouble.
+      <p className="text-black text-left font-medium text-base">
+        {description}
       </p>
-      {/* Additional content goes here */}
     </div>
   );
 };
 
-const Introduction = () => {
+const Introduction = ({ moduleId }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 2; // Total number of pages
+  const [introductions, setIntroductions] = useState([]);
+  const [totalPages, setTotalPages] = useState(1); // Total number of pages
+  const itemsPerPage = 5; // Number of items per page
+  const [error, setError] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+
+  useEffect(() => {
+    if (moduleId) {
+      fetchIntroductions();
+    }
+  }, [moduleId, currentPage]); // Trigger fetchIntroductions whenever moduleId or currentPage changes
+
+  const fetchIntroductions = async () => {
+    try {
+      const q = query(collection(firestore, `modules/${moduleId}/introduction`), where("moduleId", "==", moduleId));
+      const snapshot = await getDocs(q);
+      const introductionsData = snapshot.docs.map(doc => doc.data());
+      setIntroductions(introductionsData);
+
+      // Calculate total pages
+      const totalItems = introductionsData.length;
+      const pages = Math.ceil(totalItems / itemsPerPage);
+      setTotalPages(pages);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching introductions:", error);
+      setError("Error fetching introductions. Please try again later.");
+    }
+  };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
+    setCurrentPage(currentPage === totalPages ? 1 : currentPage + 1);
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+    setCurrentPage(currentPage === 1 ? totalPages : currentPage - 1);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    try {
+      const newIntroduction = {
+        title: newTitle,
+        description: newDescription,
+        moduleId: moduleId,
+        createdAt: serverTimestamp(),
+      };
+
+      // Store the new introduction in Firebase
+      const docRef = await addDoc(collection(firestore, `modules/${moduleId}/introduction`), newIntroduction);
+      console.log("Introduction added successfully with ID:", docRef.id);
+      
+      // Fetch introductions again to update the list
+      fetchIntroductions();
+      
+      // Reset form fields
+      setNewTitle("");
+      setNewDescription("");
+      
+      setShowForm(false); // Hide the form after successful submission
+    } catch (error) {
+      console.error("Error adding introduction:", error);
+      setError("Error adding introduction. Please try again later.");
     }
   };
 
   return (
     <div>
-      {currentPage === 1 && <IntroductionContent />}
-      {currentPage === 2 && <ImportanceContent />}
-      <div className="flex justify-between mt-4">
-        {currentPage > 1 && (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handlePrevPage}
-          >
-            Previous
-          </button>
-        )}
-        {currentPage < totalPages && (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleNextPage}
-          >
-            Next
-          </button>
+      {error && <div className="text-red-500">{error}</div>}
+      <div>
+        {!showForm ? (
+          <div className="flex justify-end">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShowForm(true)}>
+              Add
+            </button>
+          </div>
+        ) : (
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-md p-6 rounded-md z-20 border-black mt-8" style={{ width: "90%", maxWidth: "600px" }}>
+            <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800" onClick={() => setShowForm(false)}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <h2 className="text-lg font-semibold mb-4">Add Introduction</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+                <input 
+                  type="text" 
+                  id="title" 
+                  name="title" 
+                  value={newTitle} 
+                  onChange={(e) => setNewTitle(e.target.value)} 
+                  required 
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                <textarea 
+                  id="description" 
+                  name="description" 
+                  value={newDescription} 
+                  onChange={(e) => setNewDescription(e.target.value)} 
+                  rows="3" 
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                ></textarea>
+              </div>
+              <button type="submit" className="bg-blue-600 text-white py-1 px-4 rounded-md hover:bg-blue-700">Submit</button>
+            </form>
+          </div>
         )}
       </div>
+      {introductions
+        .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+        .map((intro, index) => (
+          <IntroductionContent key={index} title={intro.title} description={intro.description} />
+      ))}
+      {totalPages > 1 && (
+        <div className="flex justify-between mt-4">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handlePrevPage}>
+            Previous
+          </button>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleNextPage}>
+            Next
+          </button>
+        </div>
+      )}
+      {currentPage === totalPages && (
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handlePrevPage}>
+          Next
+        </button>
+      )}
     </div>
   );
 };

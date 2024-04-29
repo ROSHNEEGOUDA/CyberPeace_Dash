@@ -1,151 +1,96 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { collection, query, getDocs, addDoc, where } from "firebase/firestore";
+import { firestore, serverTimestamp } from "../../firebase";
 
-// QuestionCard component
-const QuestionCard = ({ question, options, correctAnswer }) => {
+// Define the QuestionCard component
+const QuestionCard = ({ id, question, options }) => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const [showAnswer, setShowAnswer] = useState(false);
 
-  const handleOptionChange = (option) => {
+  const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    setShowAnswer(true);
   };
 
   return (
-    <div className=" mx-auto mt-6 p-4 bg-blue-400 rounded-lg shadow-md">
-      <h2 className="text-lg font-semibold mb-4">{question}</h2>
-      <div>
+    <div className="question-card border border-gray-200 rounded-lg p-4 mb-4">
+      <h3 className="text-xl font-semibold mb-2">{question}</h3>
+      <ul>
         {options.map((option, index) => (
-          <div key={index} className="flex items-center mb-2">
-            <input
-              type="radio"
-              id={`option-${index}`}
-              name="options"
-              value={option}
-              checked={selectedOption === option}
-              onChange={() => handleOptionChange(option)}
-              className="mr-2"
-            />
-            <label htmlFor={`option-${index}`} className="text-gray-700">
-              {option}
+          <li key={index} className="mb-1">
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name={`question_${id}`} // Ensure each question has a unique name
+                value={option}
+                checked={selectedOption === option}
+                onChange={() => handleOptionSelect(option)}
+                className="form-radio h-5 w-5 text-blue-600"
+              />
+              <span className="ml-2">{option}</span>
             </label>
-          </div>
+          </li>
         ))}
-      </div>
-      {showAnswer && (
-        <div className="mt-2">
-          {selectedOption === correctAnswer ? (
-            <p className="text-green-600 font-semibold">
-              Correct Answer: {correctAnswer}
-            </p>
-          ) : (
-            <p className="text-red-600 font-semibold">
-              Incorrect Answer. Correct Answer: {correctAnswer}
-            </p>
-          )}
-        </div>
-      )}
+      </ul>
     </div>
   );
 };
 
-// Assessment component with pagination
-const Assessment = () => {
-  const questionsPerPage = 2; // Number of questions per page
+const Assessment = ({ moduleId }) => {
+  const questionsPerPage = 2;
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAddQuestionModal, setShowAddQuestionModal] = useState(false);
+  const [questions, setQuestions] = useState([]);
 
-  // Array of questions with their options and correct answers
-  const questions = [
-    {
-      question:
-        "Q1. Which of the following is a key trend in the MOST RECENT developments in cybersecurity threats?",
-      options: [
-        "A. A return to simple viruses that cause minor disruptions",
-        "B. Increased targeting of healthcare systems and data",
-        "C. Hacking groups primarily motivated by political activism",
-        "D. A decline in attacks focused on financial gain",
-      ],
-      correctAnswer: "B. Increased targeting of healthcare systems and data",
-    },
-    {
-      question:
-        "Q2. The first viruses mainly spread through:",
-      options: [
-        "A. Phishing emails",
-                "B. Floppy disks",
-                "C. Text Messages",
-                "D. Social media posts",
-      ],
-      correctAnswer: "B. Floppy disks",
-    },
-    {
-      question:
-        "Q3. Which of the following is an example of the 'layered security' approach to cybersecurity?",
-      options: [
-        "A. Using strong passwords and enabling two-factor authentication on your accounts.",
-        "B. Relying solely on your antivirus software for complete protection.",
-        "C. Clicking on any link sent by a friend because you trust them.",
-        "D. Sharing your birthday and hometown publicly on social media profiles.",
-      ],
-      correctAnswer: "A. Using strong passwords and enabling two-factor authentication on your accounts.",
-    },
-    {
-      question:
-        "Q4. You get a text that looks like it's from your bank. It says there's a problem with your account and you need to click a link to fix it. What should you do?",
-      options: [
-        "A. Click the link and log in right away.",
-                "B. Ignore the text. It's probably fake.",
-                "C. Go to your bank's website on your own or call their number.",
-                "D. Text back with your account number to verify.",
-      ],
-      correctAnswer: "B. Ignore the text. It's probably fake.",
-      explanation: "B. Correct: This is the safest way to check, without using any links from the suspicious message."
-    },
-    {
-      question:
-        "Q4. You get a text that looks like it's from your bank. It says there's a problem with your account and you need to click a link to fix it. What should you do?",
-      options: [
-        "A. Click the link and log in right away.",
-                "B. Ignore the text. It's probably fake.",
-                "C. Go to your bank's website on your own or call their number.",
-                "D. Text back with your account number to verify.",
-      ],
-      correctAnswer: "B. Ignore the text. It's probably fake.",
-      explanation: "B. Correct: This is the safest way to check, without using any links from the suspicious message."
-    },
-    {
-      question:
-        "Q4. You get a text that looks like it's from your bank. It says there's a problem with your account and you need to click a link to fix it. What should you do?",
-      options: [
-        "A. Click the link and log in right away.",
-                "B. Ignore the text. It's probably fake.",
-                "C. Go to your bank's website on your own or call their number.",
-                "D. Text back with your account number to verify.",
-      ],
-      correctAnswer: "B. Ignore the text. It's probably fake.",
-      explanation: "B. Correct: This is the safest way to check, without using any links from the suspicious message."
-    },
-    // Add more questions here...
-  ];
-
-  // Calculate the index range for the current page
-  const startIndex = (currentPage - 1) * questionsPerPage;
-  const endIndex = startIndex + questionsPerPage;
-
-  // Function to handle navigation to the next page
-  const nextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+  const toggleAddQuestionModal = () => {
+    setShowAddQuestionModal((prev) => !prev);
   };
 
-  // Function to handle navigation to the previous page
+  const handleAddQuestion = async (newQuestion) => {
+    try {
+      const docRef = await addDoc(collection(firestore, `modules/${moduleId}/questions`), {
+        ...newQuestion,
+        timestamp: serverTimestamp()
+      });
+      setQuestions((prevQuestions) => [...prevQuestions, { ...newQuestion, id: docRef.id }]);
+      toggleAddQuestionModal();
+    } catch (error) {
+      console.error("Error adding question: ", error);
+    }
+  };
+
+  const fetchQuestions = async () => {
+    try {
+      const q = query(collection(firestore, `modules/${moduleId}/questions`));
+      const querySnapshot = await getDocs(q);
+      const questionsData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setQuestions(questionsData);
+    } catch (error) {
+      console.error("Error fetching questions: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestions();
+  }, [moduleId]);
+
   const prevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage * questionsPerPage < questions.length) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   return (
     <div>
-      {questions.slice(startIndex, endIndex).map((question, index) => (
-        <QuestionCard key={index} {...question} />
-      ))}
+      {questions
+        .slice((currentPage - 1) * questionsPerPage, currentPage * questionsPerPage)
+        .map((question, index) => (
+          <QuestionCard key={index} {...question} />
+        ))}
       <div className="flex justify-center mt-6">
         {currentPage > 1 && (
           <button
@@ -155,7 +100,7 @@ const Assessment = () => {
             Previous
           </button>
         )}
-        {endIndex < questions.length && (
+        {currentPage * questionsPerPage < questions.length && (
           <button
             onClick={nextPage}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -163,6 +108,73 @@ const Assessment = () => {
             Next
           </button>
         )}
+        <button
+          onClick={toggleAddQuestionModal}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+        >
+          Add Question
+        </button>
+      </div>
+      {showAddQuestionModal && (
+        <AddQuestionModal onClose={toggleAddQuestionModal} onAdd={handleAddQuestion} />
+      )}
+    </div>
+  );
+};
+
+const AddQuestionModal = ({ onClose, onAdd }) => {
+  const [question, setQuestion] = useState("");
+  const [options, setOptions] = useState(["", "", "", ""]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newQuestion = { question, options };
+    onAdd(newQuestion);
+    setQuestion("");
+    setOptions(["", "", "", ""]);
+  };
+
+  const handleOptionChange = (index, value) => {
+    const newOptions = [...options];
+    newOptions[index] = value;
+    setOptions(newOptions);
+  };
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg">
+        <button className="absolute top-2 right-2" onClick={onClose}>
+          Close
+        </button>
+        <h2 className="text-lg font-semibold mb-4">Add Question</h2>
+        <form onSubmit={handleSubmit}>
+          <label className="block mb-2">Question:</label>
+          <input
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            className="border border-gray-400 rounded-lg p-2 mb-4 w-full"
+            required
+          />
+          <label className="block mb-2">Options:</label>
+          {options.map((option, index) => (
+            <input
+              key={index}
+              type="text"
+              value={option}
+              onChange={(e) => handleOptionChange(index, e.target.value)}
+              className="border border-gray-400 rounded-lg p-2 mb-2 w-full"
+              placeholder={`Option ${index + 1}`}
+              required
+            />
+          ))}
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Add Question
+          </button>
+        </form>
       </div>
     </div>
   );

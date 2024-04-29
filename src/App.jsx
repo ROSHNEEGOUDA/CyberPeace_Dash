@@ -11,6 +11,7 @@ import Cm1 from './components/Cm1';
 import CoursePage from './components/CoursePage';
 import Course from './components/Course';
 import CourseDetails from './components/CoursePage';
+import ModuleDetails from './components/ModuleDetail';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/profile" element={<Layout><Profile/></Layout>} />
             <Route path="/:title" element={<Layout><CoursePage/></Layout>} />
             <Route path="/course/:id" element={<Layout><CourseDetails/></Layout>} />
+            <Route path="/module/:moduleId" element={<Layout><ModuleDetails/></Layout>} />
             <Route path="/Featuredcompf" element={<Layout><Featuredcompf/></Layout>} />
             <Route path="/cm1" element={<Layout><Cm1/></Layout>} />
             

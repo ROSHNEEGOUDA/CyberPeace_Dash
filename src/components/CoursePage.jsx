@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+// CourseDetails.jsx
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { collection, addDoc, getDocs, deleteDoc, doc, where, query } from "firebase/firestore";
 import { firestore, storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -13,13 +14,13 @@ function CourseDetails() {
   const [selectedModuleId, setSelectedModuleId] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const location = useLocation();
-  const { state } = location;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (state && state.id) {
-      fetchModules(state.id);
+    if (location.state && location.state.id) {
+      fetchModules(location.state.id);
     }
-  }, [state]);
+  }, [location]);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -42,13 +43,13 @@ function CourseDetails() {
     const image = event.target.image.files[0];
   
     try {
-      if (state && state.id) {
+      if (location.state && location.state.id) {
         const imageUrl = await uploadImage(image);
         const docRef = await addDoc(collection(firestore, "modules"), { 
           title, 
           description, 
           imageUrl,
-          courseId: state.id
+          courseId: location.state.id
         });
   
         setModules(prevModules => [...prevModules, { id: docRef.id, title, description, imageUrl }]);
@@ -76,7 +77,7 @@ function CourseDetails() {
 
   const fetchModules = async (courseId) => {
     try {
-      console.log("Course ID:", courseId);
+      console.log("Module ID:", courseId);
       const modulesQuery = query(collection(firestore, "modules"), where("courseId", "==", courseId));
       const modulesSnapshot = await getDocs(modulesQuery);
       const modulesData = modulesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -85,7 +86,6 @@ function CourseDetails() {
       console.error("Error fetching modules:", error);
     }
   };
-  
 
   const deleteModule = async () => {
     if (selectedModuleId !== null) {
@@ -102,6 +102,10 @@ function CourseDetails() {
     }
   };
 
+  const handleModuleClick = (moduleId) => {
+    // Navigate to a new page with the module details
+    navigate(`/module/${moduleId}`);
+  };
 
   return (
     <div className="bg-slate-100 h-screen">
@@ -194,15 +198,15 @@ function CourseDetails() {
       <div>
         <center>
           <div className="text-5xl relative top-10 font-Helvetica font-bold text-black">
-            {state && state.title}
+            {location.state && location.state.title}
           </div>
         </center>
       </div>
 
       <div className="container mx-auto mt-14 px-4 mb-8">
         <div className="grid grid-cols-1 gap-8">
-          {modules.map((module, index) => (
-            <div key={index} className="w-11/12 ml-6 block bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105">
+          {modules.map((module) => (
+            <div key={module.id} onClick={() => handleModuleClick(module.id)} className="w-11/12 ml-6 block bg-white shadow-md rounded-md overflow-hidden transform transition duration-300 hover:scale-105 cursor-pointer">
               <div className="p-4 flex items-center">
                 <div className="flex-1">
                   <h2 className="text-xl font-bold mb-2">{module.title}</h2>
