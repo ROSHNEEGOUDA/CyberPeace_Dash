@@ -11,6 +11,8 @@ const VideoForm = ({ moduleId }) => {
   const [videoUrl, setVideoUrl] = useState(""); // State to store video URL after upload
   const [showForm, setShowForm] = useState(false); // State to control form visibility
   const [videos, setVideos] = useState([]); // State to store fetched videos
+  const [currentPage, setCurrentPage] = useState(1); // State to track current page
+  const [videosPerPage] = useState(6); // Number of videos per page
 
   // Function to fetch videos from Firestore
   const fetchVideos = async () => {
@@ -24,66 +26,60 @@ const VideoForm = ({ moduleId }) => {
     fetchVideos();
   }, [moduleId]); // Fetch videos when moduleId changes
 
+  // Logic for pagination
+  const indexOfLastVideo = currentPage * videosPerPage;
+  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+  const currentVideos = videos.slice(indexOfFirstVideo, indexOfLastVideo);
+
+  // Function to handle form submission
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-  
+
     // Upload video to Firebase Storage
     const videoStorageRef = ref(storage, `videos/${moduleId}/${videoFile.name}`);
     await uploadBytes(videoStorageRef, videoFile);
-  
+
     // Get download URL of the uploaded video
     const downloadURL = await getDownloadURL(videoStorageRef);
     setVideoUrl(downloadURL);
-  
+
     // Store video metadata in Firestore
     const videosCollectionRef = collection(firestore, `modules/${moduleId}/videos`);
     await addDoc(videosCollectionRef, {
       title: title,
       url: downloadURL
     });
-  
+
     // Reset form fields
     setTitle("");
     setVideoFile(null);
-  
+
     // Close the video form
     setShowForm(false);
-    
+
     // Fetch updated videos
     fetchVideos();
-  };
-
-  const handleFullScreen = (e) => {
-    const video = e.currentTarget;
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
-    } else if (video.webkitRequestFullscreen) {
-      video.webkitRequestFullscreen();
-    } else if (video.msRequestFullscreen) {
-      video.msRequestFullscreen();
-    }
   };
 
   // Function to delete video
   const handleDeleteVideo = async (videoId, videoName) => {
-    // Delete video from Firebase Storage
-    // const videoStorageRef = ref(storage, `videos/${moduleId}/${videoName}`);
-    // await deleteObject(videoStorageRef);
-    
     // Delete video from Firestore
     const videoDocRef = doc(firestore, `modules/${moduleId}/videos`, videoId);
     await deleteDoc(videoDocRef);
-    
+
     // Fetch updated videos
     fetchVideos();
   };
+
+  // Function to handle pagination navigation
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShowForm(true)}>
         Add Video
       </button>
-      
+
       {showForm && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-md p-6 rounded-md z-20 border-black mt-8" style={{ width: "90%", maxWidth: "600px" }}>
           <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800" onClick={() => setShowForm(false)}>
@@ -103,30 +99,36 @@ const VideoForm = ({ moduleId }) => {
           </form>
         </div>
       )}
-      
-     {/* Display fetched videos */}
-    <div className="video-container flex flex-wrap">
-      {videos.map((video) => (
-        <div key={video.id} className="mt-4 h-80 w-80 rounded-md">
-          <div className="bg-gray-100 rounded-md p-4">
-            <div className="video-card">
-              <video className="video-player" controls style={{ width: "100%" }}>
-                <source src={video.url} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <p className="text-lg font-semibold mt-2">{video.title}</p>
-              {/* Delete button */}
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2"
-                onClick={() => handleDeleteVideo(video.id, video.url.split('/').pop())}
-              >
-                <FontAwesomeIcon icon={faTrash} /> Delete
-              </button>
+
+      {/* Display fetched videos */}
+      <div className="video-container flex flex-wrap">
+        {currentVideos.map((video) => (
+          <div key={video.id} className="mt-4 h-80 w-80 rounded-md">
+            <div className="bg-gray-100 rounded-md p-4">
+              <div className="video-card">
+                <video className="video-player" controls style={{ width: "100%" }}>
+                  <source src={video.url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <p className="text-lg font-semibold mt-2">{video.title}</p>
+                {/* Delete button */}
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2"
+                  onClick={() => handleDeleteVideo(video.id, video.url.split('/').pop())}
+                >
+                  <FontAwesomeIcon icon={faTrash} /> Delete
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="pagination mt-4">
+        <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >Previous</button>
+        <button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastVideo >= videos.length} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >Next</button>
+      </div>
     </div>
   );
 };

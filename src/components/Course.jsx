@@ -14,6 +14,7 @@ import { firestore, storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import cf from "../assets/cf.avif";
 import cybsec from "../assets/cybsec.jpg";
+import LoadingAnimation from "./LoadingAnimation"; // import your loading animation component
 
 function Course() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -21,6 +22,7 @@ function Course() {
   const [discussions, setDiscussions] = useState([]);
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [loading, setLoading] = useState(true); // State to track loading status
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,6 +57,7 @@ function Course() {
       }
 
       setDiscussions(coursesData);
+      setLoading(false); // Set loading to false when courses are fetched
     } catch (error) {
       console.error("Error fetching courses:", error);
     }
@@ -119,6 +122,10 @@ function Course() {
   };
 
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1024 });
+
+  if (loading) {
+    return <LoadingAnimation />; // Render loading animation until courses are fetched
+  }
 
   return (
     <div className="flex flex-col relative mb-5 bg-slate-100 h-full">

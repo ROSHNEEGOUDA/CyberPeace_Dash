@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { collection, query, getDocs, addDoc, where } from "firebase/firestore";
 import { firestore, serverTimestamp } from "../../firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 // Define the QuestionCard component
 const QuestionCard = ({ id, question, options }) => {
@@ -142,9 +144,9 @@ const AddQuestionModal = ({ onClose, onAdd }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg">
-        <button className="absolute top-2 right-2" onClick={onClose}>
-          Close
+      <div className="bg-white p-8 rounded-lg relative">
+        <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800" onClick={onClose}>
+          <FontAwesomeIcon icon={faTimes} />
         </button>
         <h2 className="text-lg font-semibold mb-4">Add Question</h2>
         <form onSubmit={handleSubmit}>

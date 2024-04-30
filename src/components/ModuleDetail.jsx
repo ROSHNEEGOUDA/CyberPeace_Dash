@@ -19,7 +19,7 @@ const Module = () => {
     };
 
   return (
-    <div className="flex flex-col lg:flex-row bg-slate-100 ">
+    <div className="flex flex-col lg:flex-row bg-slate-100 h-screen ">
       <div className="lg:w-1/4 flex flex-col gap-4 items-center h-96  mt-12 mr-1 rounded-2xl border-gray-200 p-4">
         <div
           className={`bg-white border-blue-500 border-2 w-40 h-10 mb-6 mt-2  rounded-md justify-center items-center flex font-medium hover:bg-blue-500 hover:text-white hover:transition cursor-pointer transform transition-transform hover:scale-105`}
