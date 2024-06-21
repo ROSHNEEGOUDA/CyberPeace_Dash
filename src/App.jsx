@@ -5,12 +5,14 @@ import Layout from './components/Users/layout';
 import LayoutAdmin from "./components/Admin/layout"
 import Profile from './components/Users/Profile';
 import Auth from './auth/testpage';
-import CourseCard from './components/Users/CourseCard';
-import Course from './components/Users/Course';
+import CourseCard from './components/Users/Course/CourseCard';
+import Course from './components/Users/Course/Course';
 import Community from "./components/Users/Community"
 import AdminDashboard from './components/Admin/AdminDash';
 import AdminCourse from './components/Admin/AdminCourse';
 import AdminCommunity from './components/Admin/AdminCommunity';
+import CoursePage from './components/Users/Course/CoursePage';
+import CoursePreviewPage from './components/Users/Course/CoursesPreview';
 // import CourseDetails from './components/CoursePage';
 // import ModuleDetails from './components/ModuleDetail';
 
@@ -27,6 +29,8 @@ function App() {
             <Route path="/community" element={<Layout><Community/></Layout>} />
             <Route path="/AdminCommunity" element={<LayoutAdmin><AdminCommunity/></LayoutAdmin>} />
             <Route path="/profile" element={<Layout><Profile/></Layout>} />
+            <Route path="/course/coursePage" element={<Layout><CoursePage/></Layout>} />
+            <Route path="/course/coursePage/coursePreview" element={<Layout><CoursePreviewPage/></Layout>} />
             {/* <Route path="/:title" element={<Layout><CourseCard/></Layout>} /> */}
             {/* <Route path="/course/:id" element={<Layout><CourseDetails/></Layout>} /> */}
             {/* <Route path="/module/:moduleId" element={<Layout><ModuleDetails/></Layout>} /> */}

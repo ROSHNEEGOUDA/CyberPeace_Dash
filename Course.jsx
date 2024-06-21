@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import CourseCard from './CourseCard';
+import CourseCard from './src/components/Users/CourseCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser,faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
 import ProfileBoy from "../../assets/Profile.webp"
 
 const AdminCourse = () => {
   return (
     <div className="min-h-screen p-6">
-       <div className='flex justify-center'>
+      <div className='flex justify-center'>
         <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl'>
           <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
             <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
@@ -53,7 +53,7 @@ const AdminCourse = () => {
         </div>
       </div>
       <div className="flex flex-wrap justify-around ">
-        <CourseCard />
+        <Link to="/course/coursePage"><CourseCard /></Link>
         <CourseCard />
         <CourseCard />
         <CourseCard />
