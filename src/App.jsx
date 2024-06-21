@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import DashboardContent from './components/Dashboard';
-import Layout from './layout';
-import HomePage from './components/Live';
-import LivePage from './components/Liveroom';
-import Profile from './components/Profile';
+import DashboardContent from './components/Users/Dashboard';
+import Layout from './components/Users/layout';
+import LayoutAdmin from "./components/Admin/layout"
+import Profile from './components/Users/Profile';
 import Auth from './auth/testpage';
-import Featuredcompf from './components/Featuredcompf';
-import Cm1 from './components/Cm1';
-import CoursePage from './components/CoursePage';
-import Course from './components/Course';
-import CourseDetails from './components/CoursePage';
-import ModuleDetails from './components/ModuleDetail';
+import CourseCard from './components/Users/CourseCard';
+import Course from './components/Users/Course';
+import Community from "./components/Users/Community"
+import AdminDashboard from './components/Admin/AdminDash';
+import AdminCourse from './components/Admin/AdminCourse';
+import AdminCommunity from './components/Admin/AdminCommunity';
+// import CourseDetails from './components/CoursePage';
+// import ModuleDetails from './components/ModuleDetail';
 
 function App() {
   return (
@@ -20,15 +21,17 @@ function App() {
       <Routes>
             <Route path="/" element={<Auth/>} />
             <Route path="/Dashboard" element={<Layout><DashboardContent/></Layout>} />
-            <Route path="/liveclass" element={<Layout><HomePage/></Layout>} />
-            <Route path="/Liveroom/:roomId" element={<Layout><LivePage/></Layout>} />
+            <Route path="/AdminDashboard" element={<LayoutAdmin><AdminDashboard/></LayoutAdmin>} />
             <Route path="/course" element={<Layout><Course/></Layout>} />
+            <Route path="/AdminCourse" element={<LayoutAdmin><AdminCourse/></LayoutAdmin>} />
+            <Route path="/community" element={<Layout><Community/></Layout>} />
+            <Route path="/AdminCommunity" element={<LayoutAdmin><AdminCommunity/></LayoutAdmin>} />
             <Route path="/profile" element={<Layout><Profile/></Layout>} />
-            <Route path="/:title" element={<Layout><CoursePage/></Layout>} />
-            <Route path="/course/:id" element={<Layout><CourseDetails/></Layout>} />
-            <Route path="/module/:moduleId" element={<Layout><ModuleDetails/></Layout>} />
-            <Route path="/Featuredcompf" element={<Layout><Featuredcompf/></Layout>} />
-            <Route path="/cm1" element={<Layout><Cm1/></Layout>} />
+            {/* <Route path="/:title" element={<Layout><CourseCard/></Layout>} /> */}
+            {/* <Route path="/course/:id" element={<Layout><CourseDetails/></Layout>} /> */}
+            {/* <Route path="/module/:moduleId" element={<Layout><ModuleDetails/></Layout>} /> */}
+            {/* <Route path="/Featuredcompf" element={<Layout><Featuredcompf/></Layout>} />
+            <Route path="/cm1" element={<Layout><Cm1/></Layout>} /> */}
             
             {/* Define your routes here */}
 
