@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import CourseCard from './CourseCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSearch, faBell, faPlus } from "@fortawesome/free-solid-svg-icons";
-import ProfileBoy from "../../assets/Profile.webp"
+import ProfileBoy from "../../../assets/Profile.webp"
 
 const AdminCourse = () => {
   return (
@@ -49,12 +49,14 @@ const AdminCourse = () => {
                 <option>Paid</option>
               </select>
             </div>
-            <button>
-              <div className="flex items-center space-x-3 bg-blue-400 p-2 rounded-2xl">
-                <span className="text-black font-medium">Add</span>
-                <FontAwesomeIcon icon={faPlus} />
-              </div>
-            </button>
+            <Link to='/AdminCourse/addcourse'>
+              <button>
+                <div className="flex items-center space-x-3 bg-blue-400 p-2 rounded-2xl">
+                  <span className="text-black font-medium">Add</span>
+                  <FontAwesomeIcon icon={faPlus} />
+                </div>
+              </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faUsers, faCalendarDays, faFolderOpen, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import image01 from "../../assets/Screenshot 2024-06-19 001148.png";
+import image01 from "../../../assets/Screenshot 2024-06-19 001148.png";
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons/faUserCircle';
 
 const CourseCard = () => {
