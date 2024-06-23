@@ -1,14 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faUser, faBell, faSearch, faUsers, faFileAlt, faVideo, faClock, faTools, faShieldAlt, faShieldVirus, faNetworkWired, faKey, faChevronLeft, faChevronRight, faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import image01 from "../../../assets/01.jpg";
 import ProfileBoy from "../../../assets/Profile.webp"
+import Notification from '../Notification';
 
 const CoursePreviewPage = () => {
+    const [showNotifications, setShowNotifications] = useState(false);
     const week1Content = ["Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet"];
     const week2Content = ["Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet"];
     const week3Content = ["Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet"];
+
+    const handleNotification = ()=>{
+        setShowNotifications(!showNotifications);
+    }
 
     return (
         <div className="max-w-7xl mx-auto p-6 bg-gray-100">
@@ -23,11 +29,12 @@ const CoursePreviewPage = () => {
                         />
                     </div>
                     <div className="flex items-center space-x-10 mr-10">
-                        <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+                        <Link onClick={handleNotification}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
                         <Link to="/profile"><img src={ProfileBoy} // Placeholder image
                             alt="Profile"
                             className="w-10 h-10 rounded-full" /></Link>
                     </div>
+                    {showNotifications && (<Notification/>)}
                 </div>
             </div>
             <div className="flex flex-col gap-6 md:flex-row">

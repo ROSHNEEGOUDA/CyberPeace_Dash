@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faFileAlt, faCheckCircle, faTimesCircle, faClock, faSearch, faUsers, faBell, faFolderOpen, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
@@ -10,8 +10,14 @@ import NS from "../../assets/DashboardUI_images1.png"
 import DC from "../../assets/DashboardUI__30764161.png"
 import DM from "../../assets/DashboardUI__183600437cryptographyiconblockchaintechnologyrelatedvectorillustration1.png"
 import WD from "../../assets/DashboardUI_malwaresymbolredisolatedonwhitebackgroundfreevector1.png"
+import Notification from './Notification';
 
 const DashboardContent = () => {
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
 
 
   return (
@@ -28,10 +34,13 @@ const DashboardContent = () => {
             />
           </div>
           <div className="flex items-center space-x-10 mr-10">
-            <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+            <Link onClick={toggleNotifications}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
             <Link to="/profile"><img src={ProfileBoy} // Placeholder image
               alt="Profile"
               className="w-10 h-10 rounded-full" /></Link>
+            {showNotifications && (
+              <Notification/>
+            )}
           </div>
         </div>
       </div>

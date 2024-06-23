@@ -1,12 +1,18 @@
 // DiscussionEntry.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply, faSearch, faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import image01 from "../../assets/Discussion_Ellipse2.png"
 import ProfileBoy from "../../assets/Profile.webp"
+import Notification from './Notification';
 
 const AdminCommunity = () => {
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    const handleNotification = ()=>{
+        setShowNotifications(!showNotifications);
+    }
     const entries = [
         {
             id: 1,
@@ -51,11 +57,12 @@ const AdminCommunity = () => {
             />
           </div>
           <div className="flex items-center space-x-10 mr-10">
-            <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+            <Link onClick={handleNotification}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
             <Link to="/profile"><img src={ProfileBoy} // Placeholder image
               alt="Profile"
               className="w-10 h-10 rounded-full" /></Link>
           </div>
+            {showNotifications && (<Notification/>)}
         </div>
       </div>
             <div className="flex justify-between mt-4 mb-4">

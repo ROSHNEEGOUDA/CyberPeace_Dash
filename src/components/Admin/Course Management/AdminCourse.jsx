@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CourseCard from './CourseCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSearch, faBell, faPlus } from "@fortawesome/free-solid-svg-icons";
 import ProfileBoy from "../../../assets/Profile.webp"
+import Notification from '../Notification';
 
 const AdminCourse = () => {
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const handleNotification = () => {
+    setShowNotifications(!showNotifications);
+  }
   return (
     <div className="min-h-screen p-6">
       <div className='flex justify-center'>
@@ -19,11 +25,16 @@ const AdminCourse = () => {
             />
           </div>
           <div className="flex items-center space-x-10 mr-10">
-            <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+            <Link onClick={handleNotification}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
             <Link to="/profile"><img src={ProfileBoy} // Placeholder image
               alt="Profile"
               className="w-10 h-10 rounded-full" /></Link>
           </div>
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl z-50">
+              <Notification />
+            </div>
+          )}
         </div>
       </div>
       <div className=" bg-white mt-6 rounded-lg shadow-md p-2 mb-4">

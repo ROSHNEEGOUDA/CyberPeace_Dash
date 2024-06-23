@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProfileBoy from "../../assets/Profile.webp"
 import { faEye, faBook, faUsers, faStar, faClock, faSearch, faUser, faBell } from '@fortawesome/free-solid-svg-icons';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
+import Notification from './Notification';
 
 ChartJS.register(
   CategoryScale,
@@ -56,6 +57,12 @@ const AdminDashboard = () => {
     maintainAspectRatio: false,
   };
 
+  const [showNotifications, setShowNotifications] = useState(false);
+
+    const handleNotification = ()=>{
+        setShowNotifications(!showNotifications);
+    }
+
   return (
     <div>
       <div className='flex justify-center'>
@@ -69,11 +76,12 @@ const AdminDashboard = () => {
             />
           </div>
           <div className="flex items-center space-x-10 mr-10">
-            <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+            <Link onClick={handleNotification}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
             <Link to="/profile"><img src={ProfileBoy} // Placeholder image
               alt="Profile"
               className="w-10 h-10 rounded-full" /></Link>
           </div>
+          {showNotifications && (<Notification/>)}
         </div>
       </div>
       <div className="p-6 bg-gray-100 min-h-screen grid grid-cols-1 md:grid-cols-3 gap-4 pt-10">

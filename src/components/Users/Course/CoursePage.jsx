@@ -5,9 +5,11 @@ import { faStar, faUser,faBell,faSearch, faUsers, faFileAlt, faVideo, faClock, f
 import image01 from "../../../assets/01.jpg";
 import WeekContent from './WeekContent';
 import ProfileBoy from "../../../assets/Profile.webp"
+import Notification from '../Notification';
 
 const CoursePage = () => {
     const [isEnrolled, setIsEnrolled] = useState(false);
+    const [showNotifications, setShowNotifications] = useState(false);
 
     const week1Content = ["Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet"];
     const week2Content = ["Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet"];
@@ -16,6 +18,10 @@ const CoursePage = () => {
     const handleEnroll = () => {
         setIsEnrolled(true);
     };
+
+    const handleNotification = () =>{
+        setShowNotifications(!showNotifications);
+    }
 
     return (
         <div className="max-w-7xl mx-auto p-6 bg-gray-100">
@@ -30,11 +36,12 @@ const CoursePage = () => {
                         />
                     </div>
                     <div className="flex items-center space-x-10 mr-10">
-                        <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+                        <Link onClick={handleNotification}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
                         <Link to="/profile"><img src={ProfileBoy} // Placeholder image
                             alt="Profile"
                             className="w-10 h-10 rounded-full" /></Link>
                     </div>
+                    {showNotifications && (<Notification/>)}
                 </div>
             </div>
             <div className="flex flex-col gap-2 md:flex-row justify-between h-full">

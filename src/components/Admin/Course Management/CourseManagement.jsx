@@ -4,9 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faChevronDown, faChevronUp, faPlus, faSearch, faBell, faPencil } from '@fortawesome/free-solid-svg-icons';
 import image01 from "../../../assets/01.jpg";
 import ProfileBoy from "../../../assets/Profile.webp";
+import Notification from '../Notification';
 
 const CourseManagementPage = () => {
     const [photo, setPhoto] = useState(image01);
+    const [showNotifications, setShowNotifications] = useState(false);
+
+    const handleNotification = () => {
+        setShowNotifications(!showNotifications);
+    };
+
     const [sections, setSections] = useState([
         { title: "Week 1 - Introduction", content: ["Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet"] },
         { title: "Week 2 - Malware", content: ["Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet", "Lorem ipsum dolor sit amet"] },
@@ -64,9 +71,18 @@ const CourseManagementPage = () => {
                             className="w-full bg-transparent focus:outline-none"
                         />
                     </div>
-                    <div className="flex items-center space-x-10 mr-10">
-                        <Link to="/notifications"><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-                        <Link to="/profile"><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
+                    <div className="relative flex items-center space-x-10 mr-10">
+                        <Link onClick={handleNotification}>
+                            <FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl cursor-pointer" />
+                        </Link>
+                        <Link to="/profile">
+                            <img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" />
+                        </Link>
+                        {showNotifications && (
+                            <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl z-50">
+                                <Notification />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
