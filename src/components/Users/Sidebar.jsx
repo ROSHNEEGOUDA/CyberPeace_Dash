@@ -51,9 +51,9 @@ const Sidebar = () => {
         </button>
       )}
       {(isOpen || !isMobile) && (
-        <div className={`bg-gray-800 text-white w-56 min-h-screen flex flex-col top-8 ml-7 rounded-3xl ${isMobile ? 'absolute top-0 left-0 h-full' : 'fixed left-3'}`}>
+        <div className={`bg-gray-800 text-white w-56 min-h-screen flex flex-col top-0 ml-7 rounded-3xl ${isMobile ? 'absolute top-0 left-0 h-full' : 'fixed left-3'}`}>
           <div className="p-3 flex justify-center ">
-            <img src={image01} alt="logo" className="mt-3 w-4/5" />
+            <img src={image01} alt="logo" className="mt-1 w-4/5" />
           </div>
           <nav className="flex-1 mt-8">
             <ul>

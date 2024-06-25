@@ -62,8 +62,8 @@ const CourseManagementPage = () => {
     return (
         <div className="max-w-7xl mx-auto p-6 bg-gray-100">
             <div className='flex justify-center mb-10'>
-                <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl'>
-                    <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
+                <div className='bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl'>
+                    <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md">
                         <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
                         <input
                             type="text"

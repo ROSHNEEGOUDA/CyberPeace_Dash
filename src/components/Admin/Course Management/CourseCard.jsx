@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faUsers, faCalendarDays, faFolderOpen, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import image01 from "../../../assets/Screenshot 2024-06-19 001148.png";
@@ -15,7 +16,7 @@ const CourseCard = () => {
         />
         <button>
           <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-white flex justify-center items-center">
-            <FontAwesomeIcon icon={faPencilAlt} />
+            <Link to="/AdminCourse/EditCourse"><FontAwesomeIcon icon={faPencilAlt} /></Link>
           </div>
         </button>
       </div>

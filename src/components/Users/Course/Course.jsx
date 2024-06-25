@@ -1,22 +1,32 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CourseCard from './CourseCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
 import ProfileBoy from "../../../assets/Profile.webp"
 import Notification from '../Notification';
+import ToggleProfile from '../ToggleProfile';
 
 const AdminCourse = () => {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
-  const handleNotification = () =>{
+  const toggleProfile = ()=>{
+    setShowProfile(!showProfile);
+  }
+
+  const handleNotification = () => {
     setShowNotifications(!showNotifications);
+  }
+
+  const closeProfile = ()=>{
+    setShowProfile(false);
   }
 
   return (
     <div className="min-h-screen p-6">
       <div className='flex justify-center'>
-        <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl'>
+        <div className='bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between fixed top-0 shadow-xl z-50'>
           <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
             <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
             <input
@@ -27,16 +37,15 @@ const AdminCourse = () => {
           </div>
           <div className="flex items-center space-x-10 mr-10">
             <Link onClick={handleNotification}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-            <Link to="/profile"><img src={ProfileBoy} // Placeholder image
-              alt="Profile"
-              className="w-10 h-10 rounded-full" /></Link>
+            <Link onClick={toggleProfile}><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
           </div>
+          {showProfile && (<ToggleProfile closeProfile={closeProfile} />)}
           {showNotifications && (
-              <Notification/>
-            )}
+            <Notification />
+          )}
         </div>
       </div>
-      <div className=" bg-white mt-6 rounded-lg shadow-md p-2 mb-4">
+      <div className=" bg-white rounded-lg shadow-md p-2 mb-4">
         <div className="flex justify-between items-center">
           <div className="flex space-x-4">
             <button className="px-4 py-2 rounded-lg focus:outline-none focus:bg-gray-300">All</button>

@@ -14,6 +14,7 @@ import AdminCommunity from './components/Admin/AdminCommunity';
 import CoursePage from './components/Users/Course/CoursePage';
 import CoursePreviewPage from './components/Users/Course/CoursesPreview';
 import CourseManagementPage from './components/Admin/Course Management/CourseManagement';
+import EditCourse from './components/Admin/Course Management/EditCourse';
 // import CourseDetails from './components/CoursePage';
 // import ModuleDetails from './components/ModuleDetail';
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/course/coursePage" element={<Layout><CoursePage/></Layout>} />
             <Route path="/course/coursePage/coursePreview" element={<Layout><CoursePreviewPage/></Layout>} />
             <Route path="/AdminCourse/addcourse" element={<LayoutAdmin><CourseManagementPage/></LayoutAdmin>} />
+            <Route path="/AdminCourse/EditCourse" element={<LayoutAdmin><EditCourse/></LayoutAdmin>} />
             {/* <Route path="/:title" element={<Layout><CourseCard/></Layout>} /> */}
             {/* <Route path="/course/:id" element={<Layout><CourseDetails/></Layout>} /> */}
             {/* <Route path="/module/:moduleId" element={<Layout><ModuleDetails/></Layout>} /> */}

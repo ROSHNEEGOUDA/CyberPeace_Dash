@@ -11,21 +11,29 @@ import DC from "../../assets/DashboardUI__30764161.png"
 import DM from "../../assets/DashboardUI__183600437cryptographyiconblockchaintechnologyrelatedvectorillustration1.png"
 import WD from "../../assets/DashboardUI_malwaresymbolredisolatedonwhitebackgroundfreevector1.png"
 import Notification from './Notification';
+import ToggleProfile from './ToggleProfile';
 
 const DashboardContent = () => {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
+  const toggleProfile = ()=>{
+    setShowProfile(!showProfile);
+  }
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
 
+  const closeProfile = ()=>{
+    setShowProfile(false);
+  }
 
   return (
     <div className='min-h-full'>
-      {/* <Navbar /> */}
       <div className='flex justify-center'>
-        <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 absolute top-11 flex items-center justify-between  shadow-xl'>
-          <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
+        <div className='bg-white px-2 rounded-2xl py-2 w-4/5 fixed top-0 flex items-center justify-between shadow-xl'>
+          <div className="flex items-center bg-slate-200 rounded-3xl px-4 py-2 w-full max-w-md">
             <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
             <input
               type="text"
@@ -35,16 +43,13 @@ const DashboardContent = () => {
           </div>
           <div className="flex items-center space-x-10 mr-10">
             <Link onClick={toggleNotifications}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-            <Link to="/profile"><img src={ProfileBoy} // Placeholder image
-              alt="Profile"
-              className="w-10 h-10 rounded-full" /></Link>
-            {showNotifications && (
-              <Notification/>
-            )}
+            <Link onClick={toggleProfile}><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
+            {showProfile && (<ToggleProfile closeProfile={closeProfile} />)}
+            {showNotifications && (<Notification />)}
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3">
         <div className="col-span-2">
           <div className="bg-white p-4 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-4">Courses</h2>
