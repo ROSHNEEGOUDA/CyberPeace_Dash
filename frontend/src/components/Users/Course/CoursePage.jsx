@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -17,41 +17,60 @@ import {
   faNetworkWired,
   faKey,
 } from "@fortawesome/free-solid-svg-icons";
-import image01 from "../../../assets/01.jpg";
-import WeekContent from "./WeekContent";
 import ProfileBoy from "../../../assets/Profile.webp";
+import WeekContent from "./WeekContent";
 import Notification from "../Notification";
-import { useLocation } from "react-router-dom";
+import ToggleProfile from "../ToggleProfile";
 
 const CoursePage = () => {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
+  const toggleProfile = () => {
+    setShowProfile(!showProfile);
+  };
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const closeProfile = () => {
+    setShowProfile(false);
+  };
 
   const handleEnroll = () => {
     setIsEnrolled(true);
   };
 
-  const handleNotification = () => {
-    setShowNotifications(!showNotifications);
-  };
-
   const location = useLocation();
-
   const { course } = location.state || {}; // Default to an empty object if state is undefined
-
-  const weekContent = course.content;
-
 
   if (!course) {
     return <div>No course data available</div>;
   }
 
+  const weekContent = course.content || []; // Default to an empty array if content is undefined
+
+  // Function to get Tailwind CSS classes based on difficulty level
+  const getLevelClasses = (level) => {
+    switch (level) {
+      case "Beginner":
+        return "bg-green-500 text-white px-2 py-1 rounded";
+      case "Medium":
+        return "bg-yellow-500 text-white px-2 py-1 rounded";
+      case "Advanced":
+        return "bg-red-500 text-white px-2 py-1 rounded";
+      default:
+        return "bg-gray-500 text-white px-2 py-1 rounded";
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6 bg-gray-100">
       <div className="flex justify-center pb-9">
-        <div className=" bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl">
-          <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
+        <div className="bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl">
+          <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md">
             <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
             <input
               type="text"
@@ -59,22 +78,20 @@ const CoursePage = () => {
               className="w-full bg-transparent focus:outline-none"
             />
           </div>
-          <div className="flex items-center space-x-10 mr-10">
-            <Link onClick={handleNotification}>
-              <FontAwesomeIcon
-                icon={faBell}
-                className="text-gray-700 text-3xl"
-              />
-            </Link>
-            <Link to="/profile">
-              <img
-                src={ProfileBoy} // Placeholder image
-                alt="Profile"
-                className="w-10 h-10 rounded-full"
-              />
-            </Link>
+          <div className="flex items-center space-x-10 mr-10 relative">
+            <div onClick={toggleNotifications}>
+              <FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl cursor-pointer" />
+            </div>
+            <div onClick={toggleProfile}>
+              <img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full cursor-pointer" />
+            </div>
+            {showProfile && (
+              <ToggleProfile closeProfile={closeProfile} className="absolute top-14 right-0 z-20" />
+            )}
+            {showNotifications && (
+              <Notification className="absolute top-14 right-14 z-20" />
+            )}
           </div>
-          {showNotifications && <Notification />}
         </div>
       </div>
       <div className="flex flex-col gap-2 md:flex-row justify-between h-full">
@@ -82,14 +99,14 @@ const CoursePage = () => {
           <div className="flex flex-col justify-between items-start md:items-center bg-white p-6 rounded-lg shadow-md">
             <div className="md:flex-1">
               <div className="flex items-center space-x-2 mb-2">
-                <div className=" space-x-2 py-1 px-2 bg-yellow-300 rounded-3xl text-sm">
+                <div className="space-x-2 py-1 px-2 rounded-3xl text-sm">
                   <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
                   <a href="#" className="text-yellow-500">
                     4.6
                   </a>
                 </div>
-                <div className=" text-sm">based on</div>
-                <div className=" underline cursor-pointer text-blue-400">
+                <div className="text-sm">based on</div>
+                <div className="underline cursor-pointer text-blue-400">
                   10 review
                 </div>
               </div>
@@ -97,13 +114,15 @@ const CoursePage = () => {
                 {course.courseName}
               </h1>
               <div className="flex items-center mt-2 space-x-2">
-                <span className="px-2 py-1 bg-yellow-300 text-yellow-800 rounded">
-                  Medium
+                <span className={getLevelClasses(course.level)}>
+                  {course.level}
                 </span>
-                <span className="px-2 py-1 bg-gray-300 text-gray-800 rounded">
-                  <FontAwesomeIcon icon={faTools} className="mr-2" />
-                  Kali Linux
-                </span>
+                {course.tools && (
+                  <span className="px-2 py-1 bg-gray-300 text-gray-800 rounded">
+                    <FontAwesomeIcon icon={faTools} className="mr-2" />
+                    {course.tools}
+                  </span>
+                )}
               </div>
               <p className="mt-4 text-gray-600">
                 {course.description} adipiscing elit, sed do eiusmod tempor
@@ -141,7 +160,6 @@ const CoursePage = () => {
               </div>
             </div>
             <div className="space-y-4">
-             
               {weekContent.map((content, i) => (
                 <WeekContent
                   key={i}
@@ -156,7 +174,7 @@ const CoursePage = () => {
           <img src={course.imgUrl} alt="Enrollment card" className="rounded-lg" />
           {isEnrolled ? (
             <>
-              <Link to="/course/coursePage/coursePreview" state={{course:course}}>
+              <Link to="/course/coursePage/coursePreview" state={{ course: course }}>
                 <button className="w-full bg-blue-500 text-white py-2 rounded mt-4">
                   Preview
                 </button>

@@ -4,9 +4,25 @@ import UserCourseCard from "./CourseCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
 import ProfileBoy from "../../../assets/Profile.webp";
+import Notification from '../Notification';
+import ToggleProfile from '../ToggleProfile';
 
 const   AdminCourse = () => {
   const [courses, setCourses] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
+  const toggleProfile = ()=>{
+    setShowProfile(!showProfile);
+  }
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const closeProfile = ()=>{
+    setShowProfile(false);
+  } 
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -29,9 +45,9 @@ const   AdminCourse = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="flex justify-center">
-        <div className=" bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl">
+    <div className="min-h-screen p-6 -z-50">
+      <div className="flex justify-center ">
+        <div className=" bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between fixed z-50 top-11 shadow-xl">
           <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
             <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
             <input
@@ -40,20 +56,11 @@ const   AdminCourse = () => {
               className="w-full bg-transparent focus:outline-none"
             />
           </div>
-          <div className="flex items-center space-x-10 mr-10">
-            <Link>
-              <FontAwesomeIcon
-                icon={faBell}
-                className="text-gray-700 text-3xl"
-              />
-            </Link>
-            <Link to="/profile">
-              <img
-                src={ProfileBoy}
-                alt="Profile"
-                className="w-10 h-10 rounded-full"
-              />
-            </Link>
+          <div className="flex  items-center space-x-10 mr-10">
+          <Link onClick={toggleNotifications}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+            <Link onClick={toggleProfile}><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
+            {showProfile && (<ToggleProfile closeProfile={closeProfile} className="-z-50" />)}
+            {showNotifications && (<Notification className="z-50" />)}
           </div>
         </div>
       </div>

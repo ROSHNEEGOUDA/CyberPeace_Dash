@@ -1,30 +1,49 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faUser, faBell, faSearch, faUsers, faFileAlt, faVideo, faClock, faTools, faShieldAlt, faShieldVirus, faNetworkWired, faKey, faChevronLeft, faChevronRight, faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
+import {
+    faStar, faUser, faBell, faSearch, faUsers,
+    faFileAlt, faVideo, faClock, faTools,
+    faShieldAlt, faShieldVirus, faNetworkWired, faKey,
+    faBackward, faForward
+} from '@fortawesome/free-solid-svg-icons';
 import image01 from "../../../assets/01.jpg";
-import ProfileBoy from "../../../assets/Profile.webp"
+import ProfileBoy from "../../../assets/Profile.webp";
 import Notification from '../Notification';
-import { useLocation } from "react-router-dom";
+import ToggleProfile from "../ToggleProfile";
 
 const CoursePreviewPage = () => {
     const location = useLocation();
-
     const { course } = location.state || {}; // Default to an empty object if state is undefined
-    console.log(course);
-    const weekContent = course.content;
-  
+    const weekContent = course.content || []; // Default to an empty array if content is undefined
 
     const [showNotifications, setShowNotifications] = useState(false);
-  
-    const handleNotification = ()=>{
+    const [showProfile, setShowProfile] = useState(false);
+
+    const toggleProfile = () => {
+        setShowProfile(!showProfile);
+    };
+
+    const toggleNotifications = () => {
         setShowNotifications(!showNotifications);
+    };
+
+    const closeProfile = () => {
+        setShowProfile(false);
+    };
+
+    const handleEnroll = () => {
+        setIsEnrolled(true);
+    };
+
+    if (!course) {
+        return <div>No course data available</div>;
     }
 
     return (
         <div className="max-w-7xl mx-auto p-6 bg-gray-100">
             <div className='flex justify-center pb-9'>
-                <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl'>
+                <div className='bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl'>
                     <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
                         <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
                         <input
@@ -34,12 +53,19 @@ const CoursePreviewPage = () => {
                         />
                     </div>
                     <div className="flex items-center space-x-10 mr-10">
-                        <Link onClick={handleNotification}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-                        <Link to="/profile"><img src={ProfileBoy} // Placeholder image
-                            alt="Profile"
-                            className="w-10 h-10 rounded-full" /></Link>
+                        <div onClick={toggleNotifications}>
+                            <FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl cursor-pointer" />
+                        </div>
+                        <div onClick={toggleProfile}>
+                            <img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full cursor-pointer" />
+                        </div>
+                        {showProfile && (
+                            <ToggleProfile closeProfile={closeProfile} className="absolute top-14 right-0 z-20" />
+                        )}
+                        {showNotifications && (
+                            <Notification className="absolute top-14 right-14 z-20" />
+                        )}
                     </div>
-                    {showNotifications && (<Notification/>)}
                 </div>
             </div>
             <div className="flex flex-col gap-6 md:flex-row">
@@ -47,9 +73,6 @@ const CoursePreviewPage = () => {
                     <div className="bg-white p-3 rounded-lg shadow-md">
                         <div className="relative">
                             <img src={image01} alt="Course Image" className="w-full h-96 rounded-lg" />
-                            <div className="absolute bottom-4 left-4 flex items-center space-x-2">
-
-                            </div>
                             <div className='flex justify-between mt-4'>
                                 <button className="text-white bg-blue-500 hover:bg-blue-700 py-2 px-4 rounded-full">
                                     <FontAwesomeIcon icon={faBackward} className='mr-1' /> Previous
@@ -76,7 +99,7 @@ const CoursePreviewPage = () => {
                             </span>
                         </div>
                         <p className="mt-4 text-gray-600">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            {course.description} adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
                         <div className="flex items-center space-x-2 mt-4">
                             <FontAwesomeIcon icon={faUser} className="text-gray-500" />
@@ -90,18 +113,16 @@ const CoursePreviewPage = () => {
                     <div className="bg-white p-6 rounded-lg shadow-md">
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">Course Content</h2>
                         <div className="space-y-4">
-                        {weekContent.map((week,index)=>(
-                            <details key={index}  className="p-4 bg-gray-100 rounded-lg">
-                                <summary className="font-semibold text-gray-800 cursor-pointer">{week.title}</summary>
-                                <ul className="mt-2 list-disc list-inside">
-                                    {week.submodules.map((item, index) => (
-                                        <li key={index} className="text-gray-600">{item.title}</li>
-                                    ))}
-                                </ul>
-                            </details>
-                        ))}
-                           
-                           
+                            {weekContent.map((week, index) => (
+                                <details key={index} className="p-4 bg-gray-100 rounded-lg">
+                                    <summary className="font-semibold text-gray-800 cursor-pointer">{week.title}</summary>
+                                    <ul className="mt-2 list-disc list-inside">
+                                        {week.submodules.map((item, subIndex) => (
+                                            <li key={subIndex} className="text-gray-600">{item.title}</li>
+                                        ))}
+                                    </ul>
+                                </details>
+                            ))}
                         </div>
                     </div>
                 </div>

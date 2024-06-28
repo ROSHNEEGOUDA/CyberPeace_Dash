@@ -15,6 +15,7 @@ import SecureUpload from "./components/Admin/SecureUpload";
 import EditCourse from "./components/Admin/EditCourse";
 import CoursePage from "./components/Users/Course/CoursePage";
 import CoursePreviewPage from "./components/Users/Course/CoursesPreview";
+import Calendar from "./components/Users/Calander";
 
 function App() {
   return (
@@ -114,6 +115,14 @@ function App() {
           element={
             <Layout>
               <CoursePreviewPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/calander"
+          element={
+            <Layout>
+              <Calendar />
             </Layout>
           }
         />

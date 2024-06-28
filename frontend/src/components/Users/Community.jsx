@@ -1,12 +1,28 @@
 // DiscussionEntry.js
-import React from 'react';
+import React,{useState} from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply, faSearch, faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import image01 from "../../assets/Discussion_Ellipse2.png"
 import ProfileBoy from "../../assets/Profile.webp"
+import Notification from './Notification';
+import ToggleProfile from './ToggleProfile';
 
 const DiscussionEntry = () => {
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
+  
+    const toggleProfile = ()=>{
+      setShowProfile(!showProfile);
+    }
+  
+    const toggleNotifications = () => {
+      setShowNotifications(!showNotifications);
+    };
+  
+    const closeProfile = ()=>{
+      setShowProfile(false);
+    }
     const entries = [
         {
             id: 1,
@@ -51,10 +67,10 @@ const DiscussionEntry = () => {
             />
           </div>
           <div className="flex items-center space-x-10 mr-10">
-            <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-            <Link to="/profile"><img src={ProfileBoy} // Placeholder image
-              alt="Profile"
-              className="w-10 h-10 rounded-full" /></Link>
+          <Link onClick={toggleNotifications}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+            <Link onClick={toggleProfile}><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
+            {showProfile && (<ToggleProfile closeProfile={closeProfile} />)}
+            {showNotifications && (<Notification />)}
           </div>
         </div>
       </div>

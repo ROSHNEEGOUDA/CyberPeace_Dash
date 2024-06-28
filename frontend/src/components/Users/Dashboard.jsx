@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faFileAlt, faCheckCircle, faTimesCircle, faClock, faSearch, faUsers, faBell, faFolderOpen, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
@@ -10,15 +10,31 @@ import NS from "../../assets/DashboardUI_images1.png"
 import DC from "../../assets/DashboardUI__30764161.png"
 import DM from "../../assets/DashboardUI__183600437cryptographyiconblockchaintechnologyrelatedvectorillustration1.png"
 import WD from "../../assets/DashboardUI_malwaresymbolredisolatedonwhitebackgroundfreevector1.png"
+import Notification from './Notification';
+import ToggleProfile from './ToggleProfile';
 
 const DashboardContent = () => {
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
+  const toggleProfile = ()=>{
+    setShowProfile(!showProfile);
+  }
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const closeProfile = ()=>{
+    setShowProfile(false);
+  }
 
 
   return (
     <div className='min-h-full'>
       {/* <Navbar /> */}
       <div className='flex justify-center'>
-        <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 absolute top-11 flex items-center justify-between  shadow-xl'>
+        <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 fixed top-11 flex items-center justify-between  shadow-xl'>
           <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
             <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
             <input
@@ -28,10 +44,10 @@ const DashboardContent = () => {
             />
           </div>
           <div className="flex items-center space-x-10 mr-10">
-            <Link><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-            <Link to="/profile"><img src={ProfileBoy} // Placeholder image
-              alt="Profile"
-              className="w-10 h-10 rounded-full" /></Link>
+          <Link onClick={toggleNotifications}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
+            <Link onClick={toggleProfile}><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
+            {showProfile && (<ToggleProfile closeProfile={closeProfile} />)}
+            {showNotifications && (<Notification  />)}
           </div>
         </div>
       </div>
@@ -193,7 +209,7 @@ const DashboardContent = () => {
                 <h2 className="text-xl font-bold">Today</h2>
                 <h1 className='mb-2 text-sm'>June 18, 2024</h1>
               </div>
-              <Link>
+              <Link to="/calander">
                 <button className='w-20 bg-blue-950 rounded-xl text-white text-sm'>View all</button>
               </Link>
             </div>
