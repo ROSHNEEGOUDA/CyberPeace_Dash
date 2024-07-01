@@ -7,7 +7,7 @@ import { faMultiply } from "@fortawesome/free-solid-svg-icons";
 const ToggleProfile = ({closeProfile}) => {
     const [close, setClose] = useState(false)
     return (
-        <div className="absolute z-50 top-16 right-0 bg-white shadow-lg rounded-lg p-4 w-72">
+        <div className="absolute z-50 top-10 right-0 bg-white shadow-lg rounded-lg p-4 w-72">
             <div className="flex justify-end"
                 
             >

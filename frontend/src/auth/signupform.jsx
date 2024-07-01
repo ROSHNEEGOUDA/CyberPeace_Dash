@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { auth, firestore } from '../firebase';
-import { doc, setDoc } from "firebase/firestore";
-
 import Axios from "../helper/Axios.js";
 
 function SignUpForm() {

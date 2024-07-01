@@ -1,16 +1,19 @@
-import React from "react";
-// import Navbar from "./components/Navbar";
+import React, { useState } from "react";
 import Sidebar from "./Sidebar";
-// import Footer from "./components/Footer";
 import { useMediaQuery } from "react-responsive";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const MainLayout = ({ children }) => {
-  const isMobile = useMediaQuery({maxWidth : 767})
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-200">
-      <div className="flex flex-grow overflow-hidden pt-16">
-        <Sidebar className="h-full flex-shrink-0 bg-slate-200" />
-        <main className={`flex-grow p-6 h-full ${isMobile ? "" : "ml-64"}`}>
+    <div className=" w-full min-h-screen bg-gray-200">
+      <div className="flex flex-grow pt-8">
+        <div className={`${isMobile ? "" : "w-88"}`}>
+          <Sidebar className="" />
+        </div>
+        <main className={`flex-grow p-6 h-full ${ !isMobile ? "ml-64" : ""}`}>
           {children}
         </main>
       </div>

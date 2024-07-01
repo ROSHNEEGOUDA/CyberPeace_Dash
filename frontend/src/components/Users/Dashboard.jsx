@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faFileAlt, faCheckCircle, faTimesCircle, faClock, faSearch, faUsers, faBell, faFolderOpen, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
@@ -16,8 +16,10 @@ import ToggleProfile from './ToggleProfile';
 const DashboardContent = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const isMobile = useMediaQuery({maxWidth : 450})
+  const isTablet = useMediaQuery({maxWidth : 768})
 
-  const toggleProfile = ()=>{
+  const toggleProfile = () => {
     setShowProfile(!showProfile);
   }
 
@@ -25,7 +27,7 @@ const DashboardContent = () => {
     setShowNotifications(!showNotifications);
   };
 
-  const closeProfile = ()=>{
+  const closeProfile = () => {
     setShowProfile(false);
   }
 
@@ -33,79 +35,85 @@ const DashboardContent = () => {
   return (
     <div className='min-h-full'>
       {/* <Navbar /> */}
-      <div className='flex justify-center'>
-        <div className=' bg-white px-2 rounded-3xl py-2 w-4/5 fixed top-11 flex items-center justify-between  shadow-xl'>
-          <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
-            <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full bg-transparent focus:outline-none"
-            />
-          </div>
-          <div className="flex items-center space-x-10 mr-10">
-          <Link onClick={toggleNotifications}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-            <Link onClick={toggleProfile}><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
-            {showProfile && (<ToggleProfile closeProfile={closeProfile} />)}
-            {showNotifications && (<Notification  />)}
+      <div className={`flex justify-center ${isMobile ? 'p-2' : 'py-2'}`}>
+        <div className={`bg-white px-2 rounded-3xl ${isMobile ? 'py-2 w-full mx-2' : 'py-2 w-5/6 mr-3'} shadow-xl`}>
+          <div className='w-full flex flex-row justify-between'>
+            <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-52">
+              <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full bg-transparent focus:outline-none"
+              />
+            </div>
+            <div className="flex items-center space-x-2 md:space-x-10 md:mr-10">
+              <Link onClick={toggleNotifications}>
+                <FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" />
+              </Link>
+              <Link onClick={toggleProfile}>
+                <img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" />
+              </Link>
+              {showProfile && (<ToggleProfile closeProfile={closeProfile} />)}
+              {showNotifications && (<Notification />)}
+            </div>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-10">
         <div className="col-span-2">
-          <div className="bg-white p-4 rounded-lg shadow-md">
+          <div className="bg-white p-4  rounded-lg shadow-md ">
             <h2 className="text-xl font-bold mb-4">Courses</h2>
-            <table className="min-w-full bg-white text-sm">
+            <table className="min-w-full bg-white text-xs">
               <thead>
                 <tr>
-                  <th className="py-2 px-4 border-b text-left">Course</th>
-                  <th className="py-2 px-4 border-b text-left">Instructor</th>
-                  <th className="py-2 px-4 border-b text-left">Level</th>
-                  <th className="py-2 px-4 border-b text-left">Next Assignment</th>
-                  <th className="py-2 px-4 border-b text-left">Progress</th>
+                  <th className=" border-b text-left">Course</th>
+                  <th className=" border-b text-left">Instructor</th>
+                  <th className=" border-b text-left">Level</th>
+                  <th className=" border-b text-left">Next Assignment</th>
+                  <th className=" border-b text-left">Progress</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="py-2 px-4 border-b">Ethical Hacking Essentials</td>
-                  <td className="py-2 px-4 border-b">
-                    <FontAwesomeIcon icon={faUser} className="mr-2" /> Prof Raj Sharma
+                  <td className=" border-b">Ethical Hacking Essentials</td>
+                  <td className=" border-b">
+                    <FontAwesomeIcon icon={faUser} className="mr-2 text-xs" /> Prof Raj Sharma
                   </td>
-                  <td className="py-2 px-4 border-b">
-                    <span className="bg-yellow-400 text-black py-1 px-3 rounded-full text-xs">Medium</span>
+                  <td className="py-2 border-b">
+                    <span className="bg-yellow-400 text-black py-0.5 px-2 rounded-full text-xs">Medium</span>
                   </td>
-                  <td className="py-2 px-4 border-b">Jun 8, 2024 7:00pm</td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 border-b">Jun 8, 2024 7:00pm</td>
+                  <td className="py-2 border-b">
                     <div className="w-28 bg-gray-200 rounded-full h-1.5">
                       <div className="bg-green-500 h-full rounded-full" style={{ width: '80%' }}></div>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 px-4 border-b">Ethical Hacking Essentials</td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 border-b">Ethical Hacking Essentials</td>
+                  <td className="py-2 border-b">
                     <FontAwesomeIcon icon={faUser} className="mr-2" /> Prof Raj Sharma
                   </td>
-                  <td className="py-2 px-4 border-b">
-                    <span className="bg-red-400 text-black py-1 px-3 rounded-full text-xs">Hard</span>
+                  <td className="py-2 border-b">
+                    <span className="bg-red-400 text-black py-0.5 px-2 rounded-full text-xs">Hard</span>
                   </td>
-                  <td className="py-2 px-4 border-b">Jun 8, 2024 7:00pm</td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 border-b">Jun 8, 2024 7:00pm</td>
+                  <td className="py-2 border-b">
                     <div className="w-28 bg-gray-200 rounded-full h-1.5">
                       <div className="bg-green-500 h-full rounded-full" style={{ width: '80%' }}></div>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-2 px-4 border-b">Ethical Hacking Essentials</td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 border-b">Ethical Hacking Essentials</td>
+                  <td className="py-2 border-b">
                     <FontAwesomeIcon icon={faUser} className="mr-2" /> Prof Raj Sharma
                   </td>
-                  <td className="py-2 px-4 border-b">
-                    <span className="bg-green-400 text-black py-1 px-3 rounded-full text-xs">Easy</span>
+                  <td className="py-2 border-b">
+                    <span className="bg-green-400 text-black py-0.5 px-2 rounded-full text-xs">Easy</span>
                   </td>
-                  <td className="py-2 px-4 border-b">Jun 8, 2024 7:00pm</td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 border-b">Jun 8, 2024 7:00pm</td>
+                  <td className="py-2 border-b">
                     <div className="w-28 bg-gray-200 rounded-full h-1.5">
                       <div className="bg-green-500 h-full rounded-full" style={{ width: '80%' }}></div>
                     </div>
@@ -114,6 +122,7 @@ const DashboardContent = () => {
               </tbody>
             </table>
           </div>
+
           <div className="bg-slate-100 p-4 rounded-lg shadow-md mt-4">
             <div className='flex justify-between'>
               <h2 className="text-xl font-bold mb-4">Explore Courses</h2>
@@ -121,11 +130,11 @@ const DashboardContent = () => {
                 <button className='mr-5 w-20 bg-blue-950 text-white rounded-full'>View all</button>
               </Link>
             </div>
-            <div className='flex flex-row gap-4'>
+            <div className='flex flex-row gap-2.5'>
               <div className="bg-white p-3 rounded-lg shadow-2xl w-60 cursor-pointer hover:scale-105 transition duration-200">
                 <img src={image01} alt="image" className=' h-32 w-full rounded-md mb-2' />
                 <span className="bg-yellow-200 text-yellow-700 py-0.5 px-2 text-center rounded-xl text-xs">Medium</span>
-                <div className='grid grid-cols-3 space-x-3 mt-2'>
+                <div className='grid grid-cols-2 space-x-3 mt-2'>
                   <div className='flex items-center text-xs'>
                     <FontAwesomeIcon icon={faFolderOpen} className="mr-1" />
                     <span>Modules</span>
@@ -133,10 +142,6 @@ const DashboardContent = () => {
                   <div className="flex items-center text-xs">
                     <FontAwesomeIcon icon={faCalendarDays} className="mr-1" />
                     <span>12 days</span>
-                  </div>
-                  <div className="flex items-center text-xs">
-                    <FontAwesomeIcon icon={faUsers} className="mr-1" />
-                    <span>45</span>
                   </div>
                 </div>
                 <h3 className="text-md font-bold mb-1">Introduction to Cyber Security</h3>
@@ -150,7 +155,7 @@ const DashboardContent = () => {
               <div className="bg-white p-3 rounded-lg shadow-2xl w-60 cursor-pointer hover:scale-105 transition duration-200">
                 <img src={image01} alt="image" className=' h-32 w-full rounded-md mb-2' />
                 <span className="bg-yellow-200 text-yellow-700 py-0.5 px-2 text-center rounded-xl text-xs">Medium</span>
-                <div className='grid grid-cols-3 space-x-3 mt-2'>
+                <div className='grid grid-cols-2 space-x-3 mt-2'>
                   <div className='flex items-center text-xs'>
                     <FontAwesomeIcon icon={faFolderOpen} className="mr-1" />
                     <span>Modules</span>
@@ -158,10 +163,6 @@ const DashboardContent = () => {
                   <div className="flex items-center text-xs">
                     <FontAwesomeIcon icon={faCalendarDays} className="mr-1" />
                     <span>12 days</span>
-                  </div>
-                  <div className="flex items-center text-xs">
-                    <FontAwesomeIcon icon={faUsers} className="mr-1" />
-                    <span>45</span>
                   </div>
                 </div>
                 <h3 className="text-md font-bold mb-1">Introduction to Cyber Security</h3>
@@ -175,7 +176,7 @@ const DashboardContent = () => {
               <div className="bg-white p-3 rounded-lg shadow-2xl w-60 cursor-pointer hover:scale-105 transition duration-200">
                 <img src={image01} alt="image" className=' h-32 w-full rounded-md mb-2' />
                 <span className="bg-yellow-200 text-yellow-700 py-0.5 px-2 text-center rounded-xl text-xs">Medium</span>
-                <div className='grid grid-cols-3 space-x-3 mt-2'>
+                <div className='grid grid-cols-2 space-x-3 mt-2'>
                   <div className='flex items-center text-xs'>
                     <FontAwesomeIcon icon={faFolderOpen} className="mr-1" />
                     <span>Modules</span>
@@ -184,13 +185,9 @@ const DashboardContent = () => {
                     <FontAwesomeIcon icon={faCalendarDays} className="mr-1" />
                     <span>12 days</span>
                   </div>
-                  <div className="flex items-center text-xs">
-                    <FontAwesomeIcon icon={faUsers} className="mr-1" />
-                    <span>45</span>
-                  </div>
                 </div>
                 <h3 className="text-md font-bold mb-1">Introduction to Cyber Security</h3>
-                <p className="text-gray-500 text-xs mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <p className="text-gray-500 text-xs mb-2"></p>
                 <div className="flex items-center justify-between mb-4">
                   <span className="flex items-center text-gray-500 text-xs">
                     <FontAwesomeIcon icon={faUser} className="mr-1" /> by Alam Lin
@@ -219,21 +216,21 @@ const DashboardContent = () => {
                   <h3 className="text-md font-bold">Ethical Hacking</h3>
                   <p className="text-gray-500 text-sm"><FontAwesomeIcon icon={faClock} className='mx-2' />3:00-4:00pm <br /> <br /> Prof Raj Sharma</p>
                 </div>
-                <button className="bg-blue-900 text-white py-1 px-7 rounded-full">Join</button>
+                <button className="bg-blue-900 text-white py-0.5 px-3.5 rounded-full">Join</button>
               </div>
               <div className="bg-gray-100 p-4 rounded-lg mb-4 flex justify-between items-center">
                 <div>
                   <h3 className="text-md font-bold">Ethical Hacking</h3>
                   <p className="text-gray-500 text-sm"><FontAwesomeIcon icon={faClock} className='mx-2' />3:00-4:00pm <br /> <br /> Prof Raj Sharma</p>
                 </div>
-                <button className="bg-blue-900 text-white py-1 px-7 rounded-full">Join</button>
+                <button className="bg-blue-900 text-white py-0.5 px-3.5 rounded-full">Join</button>
               </div>
               <div className="bg-gray-100 p-4 rounded-lg mb-4 flex justify-between items-center">
                 <div>
                   <h3 className="text-md font-bold">Ethical Hacking</h3>
                   <p className="text-gray-500 text-sm"><FontAwesomeIcon icon={faClock} className='mx-2' />3:00-4:00pm <br /> <br /> Prof Raj Sharma</p>
                 </div>
-                <button className="bg-blue-900 text-white py-1 px-7 rounded-full">Join</button>
+                <button className="bg-blue-900 text-white py-0.5 px-3.5 rounded-full">Join</button>
               </div>
               {/* Repeat for other events */}
             </div>
@@ -276,24 +273,24 @@ const DashboardContent = () => {
       <div className="bg-white p-3 rounded-lg shadow-md mt-4">
         <h2 className="text-xl font-bold mb-4">Popular Course Topics</h2>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div className="flex items-center text-sm p-4 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
-            <img src={PT} alt="" className='w-9 h-9 mr-4' />
+          <div className="flex flex-row items-center text-xs p-2 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
+            <img src={PT} alt="" className='w-9 h-9 mr-2' />
             <span>Penetration Testing</span>
           </div>
-          <div className="flex items-center text-sm p-4 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
-            <img src={NS} alt="" className='w-9 h-9 mr-4' />
+          <div className="flex flex-row items-center text-xs p-2 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
+            <img src={NS} alt="" className='w-9 h-9 mr-2' />
             <span>Network Security</span>
           </div>
-          <div className="flex items-center text-sm p-4 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
-            <img src={DC} alt="" className='w-9 h-9 mr-4' />
+          <div className="flex flex-row items-center text-xs p-2 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
+            <img src={DC} alt="" className='w-9 h-9 mr-2' />
             <span>Data Privacy</span>
           </div>
-          <div className="flex items-center text-sm p-4 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
-            <img src={DM} alt="" className='w-9 h-9 mr-4' />
+          <div className="flex flex-row items-center text-xs p-2 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
+            <img src={DM} alt="" className='w-9 h-9 mr-2' />
             <span>Digital Marketing</span>
           </div>
-          <div className="flex items-center text-sm p-4 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
-            <img src={WD} alt="" className='w-9 h-9 mr-4' />
+          <div className="flex flex-row items-center text-xs p-2 rounded-lg cursor-pointer hover:scale-110 transition duration-200">
+            <img src={WD} alt="" className='w-9 h-9 mr-2' />
             <span>Web Development</span>
           </div>
         </div>
