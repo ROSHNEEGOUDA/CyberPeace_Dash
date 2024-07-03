@@ -16,6 +16,7 @@ import EditCourse from "./components/Admin/EditCourse";
 import CoursePage from "./components/Users/Course/CoursePage";
 import CoursePreviewPage from "./components/Users/Course/CoursesPreview";
 import Calendar from "./components/Users/Calander";
+import AdminProfile from "./components/Admin/Profile";
 
 function App() {
   return (
@@ -76,6 +77,14 @@ function App() {
             <Layout>
               <Profile />
             </Layout>
+          }
+        />
+        <Route
+          path="/AdminProfile"
+          element={
+            <LayoutAdmin>
+              <AdminProfile />
+            </LayoutAdmin>
           }
         />
         <Route

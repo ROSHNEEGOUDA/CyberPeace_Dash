@@ -21,7 +21,7 @@ const ToggleProfile = ({closeProfile}) => {
                 <div className="flex justify-center">
                     <img src={profile} alt="profile" className="w-32 h-32 rounded-full" />
                 </div>
-                <Link to="/profile" onClick={ToggleProfileClose}>
+                <Link to="/AdminProfile" onClick={ToggleProfileClose}>
                     <div className="bg-gray-200 p-2 rounded-lg shadow-sm hover:scale-105 duration-200">
                         <div className='flex justify-center mb-1'>
                             <h1 className="text-lg  font-semibold">My Profile</h1>

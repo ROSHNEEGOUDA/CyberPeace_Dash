@@ -30,7 +30,7 @@ const Sidebar = () => {
     closeSidebar();
   };
 
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = useMediaQuery({ maxWidth: 1024 });
 
   const navItems = [
     { to: "/Dashboard", icon: dashlogo, label: "Dashboard" },
@@ -42,7 +42,7 @@ const Sidebar = () => {
     <div className="flex">
 
       {(isOpen || !isMobile) && (
-        <div className={`bg-gray-800 text-white w-56 min-h-screen flex flex-col mt-8 rounded-3xl  ${isMobile ? 'absolute top-0 left-0 h-full z-50' : 'fixed top-0 left-0 ml-3'}`}>
+        <div className={`bg-gray-800 text-white w-56 min-h-screen flex flex-col rounded-3xl  ${isMobile ? 'absolute top-0 left-0 h-full z-50' : 'fixed top-0 left-0 ml-3'}`}>
           <div className="p-3 flex justify-center ">
             <img src={image01} alt="logo" className="mt-3 w-4/5" />
           </div>

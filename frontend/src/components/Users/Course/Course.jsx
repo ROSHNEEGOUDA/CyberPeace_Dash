@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import UserCourseCard from "./CourseCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
-import ProfileBoy from "../../../assets/Profile.webp";
-import Notification from '../Notification';
-import ToggleProfile from '../ToggleProfile';
+import { useMediaQuery } from "react-responsive";
 
-const   AdminCourse = () => {
+const AdminCourse = () => {
   const [courses, setCourses] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const istablete = useMediaQuery({ maxHeight: 768, minWidth: 450 })
+  const isTablet1 = useMediaQuery({ maxWidth: 672 })
+  const isMobile = useMediaQuery({ maxWidth: 426 })
 
-  const toggleProfile = ()=>{
+  const toggleProfile = () => {
     setShowProfile(!showProfile);
   }
 
@@ -20,9 +20,9 @@ const   AdminCourse = () => {
     setShowNotifications(!showNotifications);
   };
 
-  const closeProfile = ()=>{
+  const closeProfile = () => {
     setShowProfile(false);
-  } 
+  }
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -45,65 +45,85 @@ const   AdminCourse = () => {
   }, []);
 
   return (
-    <div className="min-h-screen p-6 -z-50">
-      <div className="flex justify-center ">
-        <div className=" bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between fixed z-50 top-11 shadow-xl">
-          <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md ">
-            <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full bg-transparent focus:outline-none"
-            />
-          </div>
-          <div className="flex  items-center space-x-10 mr-10">
-          <Link onClick={toggleNotifications}><FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" /></Link>
-            <Link onClick={toggleProfile}><img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" /></Link>
-            {showProfile && (<ToggleProfile closeProfile={closeProfile} className="-z-50" />)}
-            {showNotifications && (<Notification className="z-50" />)}
-          </div>
-        </div>
-      </div>
+    <div className={`min-h-screen ${isMobile ? "p-2" : "p-6"}`}>
       <div className=" bg-white mt-6 rounded-lg shadow-md p-2 mb-4">
-        <div className="flex justify-between items-center">
-          <div className="flex space-x-4">
-            <button className="px-4 py-2 rounded-lg focus:outline-none focus:bg-gray-300">
-              All
-            </button>
-            <button className="px-4 py-2 rounded-lg focus:outline-none focus:bg-gray-300">
-              Completed
-            </button>
-            <button className="px-4 py-2 rounded-lg focus:outline-none focus:bg-gray-300">
-              Active
-            </button>
-          </div>
-          <div className="flex space-x-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-600">Sort By:</span>
-              <select className="focus:outline-none cursor-pointer text-sm">
-                <option>Last Active</option>
-                <option>Newest</option>
-                <option>Oldest</option>
-              </select>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-600">Filter:</span>
-              <select className="text-sm focus:outline-none">
-                <option>Free</option>
-                <option>Paid</option>
-              </select>
-            </div>
-          </div>
+        <div className={`flex justify-between items-center ${isTablet1 ? "flex-col" : ""}`}>
+          {isMobile ? (
+            <>
+              <div className="flex flex-col text-xs">
+                <div className="flex space-x-7 mb-2">
+                  <button className="px-2 py-1 rounded-lg focus:outline-none focus:bg-gray-300">
+                    All
+                  </button>
+                  <button className="px-2 py-1 rounded-lg focus:outline-none focus:bg-gray-300">
+                    Completed
+                  </button>
+                  <button className="px-2 py-1 rounded-lg focus:outline-none focus:bg-gray-300">
+                    Active
+                  </button>
+                </div>
+                <div className="flex space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gray-600">Sort By:</span>
+                    <select className="focus:outline-none cursor-pointer text-xs">
+                      <option>Last Active</option>
+                      <option>Newest</option>
+                      <option>Oldest</option>
+                    </select>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gray-600">Filter:</span>
+                    <select className="text-sm focus:outline-none">
+                      <option>Free</option>
+                      <option>Paid</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </>
+          ) : (
+            <>
+              <div className="flex space-x-4">
+                <button className="px-4 py-2 rounded-lg focus:outline-none focus:bg-gray-300">
+                  All
+                </button>
+                <button className="px-4 py-2 rounded-lg focus:outline-none focus:bg-gray-300">
+                  Completed
+                </button>
+                <button className="px-4 py-2 rounded-lg focus:outline-none focus:bg-gray-300">
+                  Active
+                </button>
+              </div>
+              <div className="flex space-x-4">
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-600">Sort By:</span>
+                  <select className="focus:outline-none cursor-pointer text-sm">
+                    <option>Last Active</option>
+                    <option>Newest</option>
+                    <option>Oldest</option>
+                  </select>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-600">Filter:</span>
+                  <select className="text-sm focus:outline-none">
+                    <option>Free</option>
+                    <option>Paid</option>
+                  </select>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div>
         <h1 className="text-2xl font-bold mb-4">Courses</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className={`flex gap-5  ${isTablet1 ? "flex-col items-center" : "flex-row"}`}>
           {courses.map((course) => (
             <Link
               key={course._id}
               to="/course/coursePage"
-              state={{course:course}}
+              state={{ course: course }}
             >
               <UserCourseCard course={course} />
             </Link>

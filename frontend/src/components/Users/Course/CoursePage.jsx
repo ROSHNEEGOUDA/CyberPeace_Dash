@@ -19,13 +19,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ProfileBoy from "../../../assets/Profile.webp";
 import WeekContent from "./WeekContent";
-import Notification from "../Notification";
-import ToggleProfile from "../ToggleProfile";
+import { useMediaQuery } from "react-responsive";
 
 const CoursePage = () => {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const isDestop = useMediaQuery({minWidth : 768});
+  const isTablet = useMediaQuery({minWidth : 440});
+  const isMobile = useMediaQuery({maxWidth : 439})
 
   const toggleProfile = () => {
     setShowProfile(!showProfile);
@@ -67,35 +69,10 @@ const CoursePage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-gray-100">
-      <div className="flex justify-center pb-9">
-        <div className="bg-white px-2 rounded-3xl py-2 w-4/5 flex items-center justify-between absolute top-11 shadow-xl">
-          <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-full max-w-md">
-            <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full bg-transparent focus:outline-none"
-            />
-          </div>
-          <div className="flex items-center space-x-10 mr-10 relative">
-            <div onClick={toggleNotifications}>
-              <FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl cursor-pointer" />
-            </div>
-            <div onClick={toggleProfile}>
-              <img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full cursor-pointer" />
-            </div>
-            {showProfile && (
-              <ToggleProfile closeProfile={closeProfile} className="absolute top-14 right-0 z-20" />
-            )}
-            {showNotifications && (
-              <Notification className="absolute top-14 right-14 z-20" />
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 md:flex-row justify-between h-full">
-        <div className="w-2/3">
+    <div className={`max-w-7xl mx-auto bg-gray-100 ${isMobile ? "p-3" : "p-6"}`}>
+      
+      <div className={`flex  gap-2 justify-between h-full ${isTablet ? "flex-row" : "md:flex-row flex-col"}`}>
+        <div className={`${isMobile ? " w-full" : "w-2/3"}`}>
           <div className="flex flex-col justify-between items-start md:items-center bg-white p-6 rounded-lg shadow-md">
             <div className="md:flex-1">
               <div className="flex items-center space-x-2 mb-2">
@@ -110,7 +87,7 @@ const CoursePage = () => {
                   10 review
                 </div>
               </div>
-              <h1 className="text-3xl font-bold text-gray-800">
+              <h1 className={` font-bold text-gray-800 ${isMobile ? "text-xl" : "text-3xl"}`}>
                 {course.courseName}
               </h1>
               <div className="flex items-center mt-2 space-x-2">
@@ -124,11 +101,11 @@ const CoursePage = () => {
                   </span>
                 )}
               </div>
-              <p className="mt-4 text-gray-600">
+              <p className={`mt-4 text-gray-600 ${isMobile ? "text-sm" : ""}`}>
                 {course.description} adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim ve
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim ve     {/* remove the reaminig text */}
               </p>
-              <div className="flex items-center space-x-2 mt-4">
+              <div className={`flex items-center space-x-2 mt-4 ${isMobile ? "text-sm" : ""}`}>
                 <FontAwesomeIcon icon={faUser} className="text-gray-500" />
                 <span className="text-gray-500">{course.trainerName}</span>
                 <span className="text-gray-500"> </span>
@@ -138,11 +115,11 @@ const CoursePage = () => {
             </div>
           </div>
           <div className="mt-6 bg-white p-6 w-full rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            <h2 className={` font-semibold text-gray-800 mb-4 ${isMobile ? " text-lg" : "text-xl"}`}>
               Course Content
             </h2>
-            <div className="flex items-center space-x-4 text-gray-600 mb-4">
-              <div className="flex items-center space-x-2">
+            <div className={`flex items-center text-gray-600 mb-4 ${isMobile ? " text-sm flex-col justify-start" : " space-x-4"}`}>
+              <div className={`flex space-x-2 ${isMobile ? "justify-start" : "items-center"}`}>
                 <FontAwesomeIcon icon={faFileAlt} className="text-gray-500" />
                 <span>21 sections</span>
               </div>
@@ -170,7 +147,7 @@ const CoursePage = () => {
             </div>
           </div>
         </div>
-        <div className="mt-6 md:mt-0 md:ml-6 bg-white p-6 w-5/6 md:w-1/3 rounded-lg shadow-md">
+        <div className={`mt-6 md:mt-0 md:ml-6 bg-white p-6  rounded-lg shadow-md ${isDestop ? "w-1/3" : `${isTablet ? "w-1/3" : ""}`} `}>
           <img src={course.imgUrl} alt="Enrollment card" className="rounded-lg" />
           {isEnrolled ? (
             <>
@@ -195,7 +172,7 @@ const CoursePage = () => {
             <h2 className="text-xl font-semibold text-gray-800">
               This course includes
             </h2>
-            <div className="space-y-2 text-gray-600 mt-2">
+            <div className={`space-y-2 text-gray-600 mt-2 ${isMobile ? "text-xs" : ""}`}>
               <div>
                 <FontAwesomeIcon icon={faShieldAlt} className="mr-3" />
                 Cybersecurity Fundamentals

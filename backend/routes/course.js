@@ -1,8 +1,9 @@
-// routes/course.js
-import express from "express";
-import Course from "../models/video.js"; // Ensure you have a Course model
+import express from 'express';
+import pkg from 'cloudinary';
+import Course from '../models/video.js'; // Ensure you have a Course model
 import upload from '../middlewares/upload.js';
-import { v2 as cloudinary } from 'cloudinary';
+
+const { v2: cloudinary } = pkg;
 
 const router = express.Router();
 
@@ -43,46 +44,6 @@ router.put('/:id', upload.single('file'), async (req, res) => {
     res.status(500).json({ message: 'Internal server error', error });
   }
 });
-
-// router.put('/:id', async (req, res) => {
-//     try {
-//       const { id } = req.params;
-//       const updatedCourse = req.body;
-
-//       // Find the course by ID and update it with the new data
-//       const course = await Course.findByIdAndUpdate(id, updatedCourse, { new: true });
-
-//       if (!course) {
-//         return res.status(404).json({ message: 'Course not found' });
-//       }
-
-//       res.json(course);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ message: 'Server error' });
-//     }
-//   });
-
-// router.put("/:id", async (req, res) => {
-//   try {
-//     const course = await Course.findById(req.params.id);
-
-//     const data = {
-//       courseName: req.body.courseName,
-//       description: req.body.description,
-//       trainerName: req.body.trainerName,
-//       level: req.body.level,
-//       tools: req.body.tools,
-//       imgUrl: req.body.imgUrl,
-//       content: req.body.content,
-//     }
-
-//     // modify image
-//     if(req.body.imgUrl != ''){
-//       const ImgId = currentCourse.imgUrl.
-//     }
-//   } catch (error) {}
-// });
 
 // POST /api/courses
 router.post("/", async (req, res) => {

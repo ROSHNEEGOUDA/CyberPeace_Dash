@@ -12,11 +12,12 @@ import DM from "../../assets/DashboardUI__183600437cryptographyiconblockchaintec
 import WD from "../../assets/DashboardUI_malwaresymbolredisolatedonwhitebackgroundfreevector1.png"
 import Notification from './Notification';
 import ToggleProfile from './ToggleProfile';
+import { isMatch } from 'date-fns';
 
 const DashboardContent = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const isMobile = useMediaQuery({maxWidth : 450})
+  const isMobile = useMediaQuery({maxWidth : 536})
   const isTablet = useMediaQuery({maxWidth : 768})
 
   const toggleProfile = () => {
@@ -34,31 +35,6 @@ const DashboardContent = () => {
 
   return (
     <div className='min-h-full'>
-      {/* <Navbar /> */}
-      <div className={`flex justify-center ${isMobile ? 'p-2' : 'py-2'}`}>
-        <div className={`bg-white px-2 rounded-3xl ${isMobile ? 'py-2 w-full mx-2' : 'py-2 w-5/6 mr-3'} shadow-xl`}>
-          <div className='w-full flex flex-row justify-between'>
-            <div className="flex items-center bg-slate-200 rounded-full px-4 py-2 w-52">
-              <FontAwesomeIcon icon={faSearch} className="text-gray-500 mr-2" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-full bg-transparent focus:outline-none"
-              />
-            </div>
-            <div className="flex items-center space-x-2 md:space-x-10 md:mr-10">
-              <Link onClick={toggleNotifications}>
-                <FontAwesomeIcon icon={faBell} className="text-gray-700 text-3xl" />
-              </Link>
-              <Link onClick={toggleProfile}>
-                <img src={ProfileBoy} alt="Profile" className="w-10 h-10 rounded-full" />
-              </Link>
-              {showProfile && (<ToggleProfile closeProfile={closeProfile} />)}
-              {showNotifications && (<Notification />)}
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-10">
         <div className="col-span-2">
           <div className="bg-white p-4  rounded-lg shadow-md ">
@@ -70,53 +46,62 @@ const DashboardContent = () => {
                   <th className=" border-b text-left">Instructor</th>
                   <th className=" border-b text-left">Level</th>
                   <th className=" border-b text-left">Next Assignment</th>
-                  <th className=" border-b text-left">Progress</th>
+                  {isMobile ? null : <th className=" border-b text-left">Progress</th>}
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td className=" border-b">Ethical Hacking Essentials</td>
                   <td className=" border-b">
-                    <FontAwesomeIcon icon={faUser} className="mr-2 text-xs" /> Prof Raj Sharma
+                    <FontAwesomeIcon icon={faUser} className={`${isMobile ? "" : "mr-2"}`} /> Prof Raj Sharma
                   </td>
                   <td className="py-2 border-b">
-                    <span className="bg-yellow-400 text-black py-0.5 px-2 rounded-full text-xs">Medium</span>
+                    <span className={` text-xs ${isMobile ? "text-yellow-400" : "bg-yellow-400 text-black py-0.5 px-2 rounded-full"}`}>Medium</span>
                   </td>
                   <td className="py-2 border-b">Jun 8, 2024 7:00pm</td>
                   <td className="py-2 border-b">
-                    <div className="w-28 bg-gray-200 rounded-full h-1.5">
+                  {isMobile ? (<>
+                    </>) : (
+                      <div className="w-28 bg-gray-200 rounded-full h-1.5">
                       <div className="bg-green-500 h-full rounded-full" style={{ width: '80%' }}></div>
                     </div>
+                    )}
                   </td>
                 </tr>
                 <tr>
                   <td className="py-2 border-b">Ethical Hacking Essentials</td>
                   <td className="py-2 border-b">
-                    <FontAwesomeIcon icon={faUser} className="mr-2" /> Prof Raj Sharma
+                    <FontAwesomeIcon icon={faUser} className={`${isMobile ? "" : "mr-2"}`} /> Prof Raj Sharma
                   </td>
                   <td className="py-2 border-b">
-                    <span className="bg-red-400 text-black py-0.5 px-2 rounded-full text-xs">Hard</span>
+                    <span className={` text-xs ${isMobile ? "text-red-600" : "bg-red-400 text-black py-0.5 px-2 rounded-full"}`}>Hard</span>
                   </td>
                   <td className="py-2 border-b">Jun 8, 2024 7:00pm</td>
                   <td className="py-2 border-b">
-                    <div className="w-28 bg-gray-200 rounded-full h-1.5">
+                    {isMobile ? (<>
+                    </>) : (
+                      <div className="w-28 bg-gray-200 rounded-full h-1.5">
                       <div className="bg-green-500 h-full rounded-full" style={{ width: '80%' }}></div>
                     </div>
+                    )}
                   </td>
                 </tr>
                 <tr>
                   <td className="py-2 border-b">Ethical Hacking Essentials</td>
                   <td className="py-2 border-b">
-                    <FontAwesomeIcon icon={faUser} className="mr-2" /> Prof Raj Sharma
+                    <FontAwesomeIcon icon={faUser} className={`${isMobile ? "" : "mr-2"}`} /> Prof Raj Sharma
                   </td>
                   <td className="py-2 border-b">
-                    <span className="bg-green-400 text-black py-0.5 px-2 rounded-full text-xs">Easy</span>
+                    <span className={` text-xs ${isMobile ? "text-green-500" : "bg-green-400 text-black py-0.5 px-2 rounded-full"}`}>Easy</span>
                   </td>
                   <td className="py-2 border-b">Jun 8, 2024 7:00pm</td>
                   <td className="py-2 border-b">
-                    <div className="w-28 bg-gray-200 rounded-full h-1.5">
+                  {isMobile ? (<>
+                    </>) : (
+                      <div className="w-28 bg-gray-200 rounded-full h-1.5">
                       <div className="bg-green-500 h-full rounded-full" style={{ width: '80%' }}></div>
                     </div>
+                    )}
                   </td>
                 </tr>
               </tbody>
@@ -126,11 +111,11 @@ const DashboardContent = () => {
           <div className="bg-slate-100 p-4 rounded-lg shadow-md mt-4">
             <div className='flex justify-between'>
               <h2 className="text-xl font-bold mb-4">Explore Courses</h2>
-              <Link>
+              <Link to="/course">
                 <button className='mr-5 w-20 bg-blue-950 text-white rounded-full'>View all</button>
               </Link>
             </div>
-            <div className='flex flex-row gap-2.5'>
+            <div className={`flex ${isMobile ? "flex-col space-y-2" : "flex-row gap-2.5"}`}>
               <div className="bg-white p-3 rounded-lg shadow-2xl w-60 cursor-pointer hover:scale-105 transition duration-200">
                 <img src={image01} alt="image" className=' h-32 w-full rounded-md mb-2' />
                 <span className="bg-yellow-200 text-yellow-700 py-0.5 px-2 text-center rounded-xl text-xs">Medium</span>

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSignOutAlt, faBell, faSearch } from '@fortawesome/free-solid-svg-icons';
-import Notification from './Users/Notification';
-import ToggleProfile from './Users/ToggleProfile';
+import Notification from './Notification';
+import ToggleProfile from './ToggleProfile';
 import { useMediaQuery } from 'react-responsive';
-import ProfileBoy from "../assets/Profile.webp";
+import ProfileBoy from "../../assets/Profile.webp";
 
 const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);

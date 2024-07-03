@@ -4,15 +4,15 @@ import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, en
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const events = {
-  '2024-06-01': [{ time: '10:00 AM - 11:00 PM', title: 'Class with Prof. Smith' }],
-  '2024-06-05': [{ time: '10:00 AM - 11:00 PM', title: 'Class with Prof. Smith' }],
-  '2024-06-09': [{ time: '10:00 AM - 11:00 PM', title: 'Class with Prof. Smith' }],
-  '2024-06-12': [{ time: '2:00 PM - 3:00 PM', title: 'Class with Prof. Johnson' }],
-  '2024-06-15': [{ time: '11:00 AM - 12:00 PM', title: 'Class with Prof. Brown' }],
-  '2024-06-18': [{ time: '11:00 AM - 12:00 PM', title: 'Class with Prof. Brown' }],
-  '2024-06-22': [{ time: '3:00 PM - 4:00 PM', title: 'Class with Prof. Davis' }],
-  '2024-06-24': [{ time: '3:00 PM - 4:00 PM', title: 'Class with Prof. Davis' }],
-  '2024-06-28': [{ time: '3:00 PM - 4:00 PM', title: 'Class with Prof. Davis' }],
+  '2024-07-01': [{ time: '10:00 AM - 11:00 PM', title: 'Class with Prof. Smith' }],
+  '2024-07-05': [{ time: '10:00 AM - 11:00 PM', title: 'Class with Prof. Smith' }],
+  '2024-07-09': [{ time: '10:00 AM - 11:00 PM', title: 'Class with Prof. Smith' }],
+  '2024-07-12': [{ time: '2:00 PM - 3:00 PM', title: 'Class with Prof. Johnson' }],
+  '2024-07-15': [{ time: '11:00 AM - 12:00 PM', title: 'Class with Prof. Brown' }],
+  '2024-07-18': [{ time: '11:00 AM - 12:00 PM', title: 'Class with Prof. Brown' }],
+  '2024-07-22': [{ time: '3:00 PM - 4:00 PM', title: 'Class with Prof. Davis' }],
+  '2024-07-24': [{ time: '3:00 PM - 4:00 PM', title: 'Class with Prof. Davis' }],
+  '2024-07-28': [{ time: '3:00 PM - 4:00 PM', title: 'Class with Prof. Davis' }],
 };
 
 const Calendar = () => {

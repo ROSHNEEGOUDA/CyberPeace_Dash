@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBook,
@@ -15,10 +15,12 @@ import {
 import dashlogo from "../../assets/dashboard.svg";
 import image01 from "../../assets/CyberPeace Logo Verticle-03.png"
 import { useMediaQuery } from "react-responsive";
+import LowerBar from "./LowerBar";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -28,7 +30,12 @@ const Sidebar = () => {
     setIsOpen(false);
   };
 
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const handleNavigation = (path) => {
+    navigate(path);
+    closeSidebar();
+  };
+
+  const isMobile = useMediaQuery({ maxWidth: 1024 });
 
   const navItems = [
     { to: "/AdminDashboard", icon: dashlogo, label: "Dashboard" },
@@ -41,17 +48,9 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="relative">
-      {isMobile && (
-        <button
-          className="md:hidden bg-blue-500 hover:bg-blue-600 text-white p-1 rounded-sm absolute top-2 left-0 ml-2 border-black z-20"
-          onClick={toggleSidebar}
-        >
-          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="text-lg" />
-        </button>
-      )}
+    <div className="flex">
       {(isOpen || !isMobile) && (
-        <div className={`bg-gray-800 text-white w-56 min-h-screen flex flex-col top-8 ml-7 rounded-3xl ${isMobile ? 'absolute top-0 left-0 h-full' : 'fixed left-3'}`}>
+        <div className={`bg-gray-800 text-white w-56 min-h-screen flex flex-col rounded-3xl  ${isMobile ? 'absolute top-0 left-0 h-full z-50' : 'fixed top-0 left-0 ml-3'}`}>
           <div className="p-3 flex justify-center ">
             <img src={image01} alt="logo" className="mt-3 w-4/5" />
           </div>
@@ -75,6 +74,8 @@ const Sidebar = () => {
           </nav>
         </div>
       )}
+
+      {isMobile && !isOpen && <LowerBar navItems={navItems} handleNavigation={handleNavigation} />}
     </div>
   );
 };
@@ -123,7 +124,7 @@ export default Sidebar;
 //       setLoading(false);
 //     } catch (error) {
 //       console.error(error);
-//     } 
+//     }
 //   };
 
 //   return (

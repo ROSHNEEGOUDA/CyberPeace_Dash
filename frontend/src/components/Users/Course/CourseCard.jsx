@@ -1,20 +1,23 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faUsers, faCalendarDays, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
+import { useMediaQuery } from "react-responsive";
 
 const CourseCard = ({ course }) => {
+  const isTablet = useMediaQuery({ maxWidth: 768, minWidth: 450 });
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4 w-64 mb-4 cursor-pointer hover:scale-105 transition duration-200">
+    <div className={`bg-white  rounded-lg shadow-lg p-4 mb-4 cursor-pointer hover:scale-105 transition duration-200 ${isTablet ? "w-full" : "w-64"}`}>
       <div className="relative">
         <img
           src={course.imgUrl}
           alt={course.courseName}
-          className="w-full h-32 object-cover rounded-xl"
+          className="w-full flex h-32 object-cover rounded-xl"
         />
       </div>
-      <h2 className="text-xl font-semibold mt-4">{course.courseName}</h2>
-      <div className='flex items-center space-x-1 text-sm mt-2'>
-        <FontAwesomeIcon icon={faUserCircle} className='text-sm' />
+      <h2 className="text-lg sm:text-xl font-semibold mt-4">{course.courseName}</h2>
+      <div className="flex items-center space-x-1 text-sm mt-2">
+        <FontAwesomeIcon icon={faUserCircle} className="text-sm" />
         <p className="text-gray-600 text-xs">by {course.trainerName}</p>
       </div>
       <div className="flex flex-row gap-3 items-center mt-2">

@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import Sidebar from "./Sidebar";
+import Navbar from "../Navbar";
 import { useMediaQuery } from "react-responsive";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const MainLayout = ({ children }) => {
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-
+  const isMobileandTablet = useMediaQuery({maxWidth : 1024})
   return (
-    <div className=" w-full min-h-screen bg-gray-200">
-      <div className="flex flex-grow pt-8">
-        <div className={`${isMobile ? "" : "w-88"}`}>
-          <Sidebar className="" />
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Header */}
+      <div className={`flex justify-center h-14 ${isMobileandTablet ? "" : ""}`}>
+        <Navbar />
+      </div>
+      
+      {/* Main Content */}
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <div className={`${isMobileandTablet ? "" : "w-64"}`}>
+          <Sidebar />
         </div>
-        <main className={`flex-grow p-6 h-full ${ !isMobile ? "ml-64" : ""}`}>
+        
+        {/* Main Content Area */}
+        <main className="flex-1 p-4 pb-20 w-5/6">
           {children}
         </main>
       </div>
-      {/* Uncomment if you want to include the Footer */}
-      {/* <Footer /> */}
     </div>
   );
 };

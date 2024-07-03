@@ -1,9 +1,11 @@
 import multer from 'multer';
-import { v2 as cloudinary } from 'cloudinary';
+import pkg from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables from .env file
+
+const { v2: cloudinary } = pkg;
 
 // Configure Cloudinary
 cloudinary.config({

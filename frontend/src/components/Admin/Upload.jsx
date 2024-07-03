@@ -212,7 +212,7 @@ const Upload = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-100 relative">
+    <div className="max-w-4xl p-6 bg-gray-100 relative">
       {successMessage && (
         <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
           {successMessage}
