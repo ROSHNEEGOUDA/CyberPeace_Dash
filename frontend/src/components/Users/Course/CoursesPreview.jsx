@@ -5,7 +5,8 @@ import {
     faStar, faUser, faBell, faSearch, faUsers,
     faFileAlt, faVideo, faClock, faTools,
     faShieldAlt, faShieldVirus, faNetworkWired, faKey,
-    faBackward, faForward
+    faBackward, faForward,
+    faFlask
 } from '@fortawesome/free-solid-svg-icons';
 import image01 from "../../../assets/01.jpg";
 import { useMediaQuery } from 'react-responsive';
@@ -18,9 +19,9 @@ const CoursePreviewPage = () => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
 
-    const isDestop = useMediaQuery({minWidth : 768});
-    const isTablet = useMediaQuery({minWidth : 440})
-    const isMobile = useMediaQuery({maxWidth : 440})
+    const isDestop = useMediaQuery({ minWidth: 768 });
+    const isTablet = useMediaQuery({ minWidth: 440 })
+    const isMobile = useMediaQuery({ maxWidth: 440 })
 
     const toggleProfile = () => {
         setShowProfile(!showProfile);
@@ -77,11 +78,14 @@ const CoursePreviewPage = () => {
                         <p className={`mt-4 text-gray-600 ${isMobile ? "text-sm" : ""}`}>
                             {course.description} adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </p>
-                        <div className={`flex items-center space-x-2 mt-4 ${isMobile ? "text-sm" : ""}`}>
-                            <FontAwesomeIcon icon={faUser} className="text-gray-500" />
-                            <span className="text-gray-500">{course.trainerName}</span>
-                            <FontAwesomeIcon icon={faUsers} className="text-gray-500" />
-                            <span className="text-gray-500">100+ students enrolled</span>
+                        <div className='flex justify-between'>
+                            <div className={`flex items-center space-x-2 mt-4 ${isMobile ? "text-sm" : ""}`}>
+                                <FontAwesomeIcon icon={faUser} className="text-gray-500" />
+                                <span className="text-gray-500">{course.trainerName}</span>
+                                <FontAwesomeIcon icon={faUsers} className="text-gray-500" />
+                                <span className="text-gray-500">100+ students enrolled</span>
+                            </div>
+                            <Link><button className={`text-black mt-4  rounded-md ${isMobile ? "" : "py-2 px-4 bg-gray-300"}`}><FontAwesomeIcon icon={faFlask} />Lab</button></Link>
                         </div>
                     </div>
                 </div>

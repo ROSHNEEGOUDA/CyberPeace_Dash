@@ -118,7 +118,7 @@ const AdminCourse = () => {
       </div>
       <div>
         <h1 className="text-2xl font-bold mb-4">Courses</h1>
-        <div className={`flex gap-5  ${isTablet1 ? "flex-col items-center" : "flex-row"}`}>
+        <div className={`grid gap-5  ${isTablet1 ? "grid-cols-1" : " grid-cols-3"} ${isMobile ? "" : ""}`}>
           {courses.map((course) => (
             <Link
               key={course._id}
