@@ -17,6 +17,7 @@ import CoursePage from "./components/Users/Course/CoursePage";
 import CoursePreviewPage from "./components/Users/Course/CoursesPreview";
 import Calendar from "./components/Users/Calander";
 import AdminProfile from "./components/Admin/Profile";
+import AdminCalander from "./components/Admin/Calander";
 
 function App() {
   return (
@@ -133,6 +134,14 @@ function App() {
             <Layout>
               <Calendar />
             </Layout>
+          }
+        />
+        <Route
+          path="/AdminCalander"
+          element={
+            <LayoutAdmin>
+              <AdminCalander />
+            </LayoutAdmin>
           }
         />
       </Routes>
