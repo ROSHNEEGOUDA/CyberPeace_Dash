@@ -6,7 +6,7 @@ const socket = io(import.meta.env.VITE_BACKEND_BASEURL);
 
 const MAX_INITIAL_DISPLAY = 5; // Maximum number of notifications to display initially
 
-const Notification = () => {
+const Notification = ({ setNotificationCount }) => {
   const [notifications, setNotifications] = useState([]);
   const [fetchingNotifications, setFetchingNotifications] = useState(true);
   const [visibleNotifications, setVisibleNotifications] = useState(MAX_INITIAL_DISPLAY);
@@ -15,9 +15,10 @@ const Notification = () => {
     const fetchInitialNotifications = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_BASEURL}/api/event`
+          `${import.meta.env.VITE_BACKEND_BASEURL}/api/notify`
         );
         setNotifications(response.data); // Set initial notifications
+        setNotificationCount(response.data.length); // Update notification count in Navbar
         setFetchingNotifications(false); // Update fetching state
       } catch (error) {
         console.error("Error fetching notifications:", error);
@@ -30,20 +31,25 @@ const Notification = () => {
 
     socket.on("newEvent", (event) => {
       // Prepend new events to the notifications array
-      setNotifications(prevNotifications => [event, ...prevNotifications]);
+      setNotifications(prevNotifications => {
+        const updatedNotifications = [event, ...prevNotifications];
+        setNotificationCount(updatedNotifications.length); // Update notification count in Navbar
+        return updatedNotifications;
+      });
     });
 
     return () => {
       socket.off("newEvent");
     };
-  }, [fetchingNotifications]); // Remove notifications from dependencies
+  }, [fetchingNotifications, setNotificationCount]);
 
   const handleClearNotifications = async () => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_BASEURL}/api/clear-notifications`
+        `${import.meta.env.VITE_BACKEND_BASEURL}/api/notify/clear`
       );
       setNotifications([]);
+      setNotificationCount(0); // Reset notification count in Navbar
       setFetchingNotifications(true);
     } catch (error) {
       console.error("Error clearing notifications:", error);
@@ -72,9 +78,10 @@ const Notification = () => {
             <div key={index} className="bg-gray-100 p-2 rounded-lg shadow-sm">
               <div className="flex justify-between mb-1">
                 <h4 className="text-sm font-semibold">{notification.instructor}</h4>
-                <p className="text-xs text-gray-500">{notification.time}</p>
+                <p className="text-xs text-gray-500">{new Date(notification.createdAt).toLocaleTimeString()}</p>
               </div>
               <p className="text-gray-600 text-xs mb-1">{notification.title}</p>
+              <p className="text-gray-600 text-xs">{notification.timeFrom} - {notification.timeTo}</p>
             </div>
           ))
         )}

@@ -10,6 +10,12 @@ const AdminCalendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState({});
+  const [formValues, setFormValues] = useState({
+    timeFrom: '',
+    timeTo: '',
+    title: '',
+    instructor: ''
+  });
 
   useEffect(() => {
     // Load events from localStorage on component mount
@@ -101,13 +107,15 @@ const AdminCalendar = () => {
               <span className={`text-gray-900 ${!isSameMonth(day, monthStart) ? 'text-gray-400' : ''}`}>{formattedDate}</span>
             </div>
             <div className="text-xs">
-              {dayEvents.slice(0, MAX_EVENTS_DISPLAY-1).map((event, index) => (
-                <div key={index}>
-                  <div className="font-semibold text-xs">{event.time}</div>
-                  <div className='text-xs'>{event.instructor}</div>
-                </div>
-              ))}
-
+              {dayEvents
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, MAX_EVENTS_DISPLAY - 1)
+                .map((event, index) => (
+                  <div key={index}>
+                    <div className="font-semibold text-xs">{event.timeFrom} - {event.timeTo}</div>
+                    <div className='text-xs'>{event.instructor}</div>
+                  </div>
+                ))}
             </div>
           </div>
         );
@@ -139,25 +147,49 @@ const AdminCalendar = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedDate(null);
+    setFormValues({
+      timeFrom: '',
+      timeTo: '',
+      title: '',
+      instructor: ''
+    });
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    const { time, title, instructor } = event.target.elements;
-    const newEvent = { date: selectedDate, time: time.value, title: title.value, instructor: instructor.value };
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value
+    });
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const newEvent = {
+      date: selectedDate,
+      timeFrom: formValues.timeFrom,
+      timeTo: formValues.timeTo,
+      title: formValues.title,
+      instructor: formValues.instructor
+    };
 
     try {
+      // Save the event to the backend
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_BASEURL}/api/event`,
         newEvent
       );
-      newEvent.id = response.data.id; // Assuming the backend returns the new event's id
-      // Update the local events state
-      if (!events[selectedDate]) {
-        events[selectedDate] = [];
-      }
-      events[selectedDate].push(newEvent);
-      setEvents({ ...events }); // Trigger state update
+
+      // Update the events state with the new event
+      setEvents(prevEvents => {
+        const updatedEvents = { ...prevEvents };
+        if (!updatedEvents[selectedDate]) {
+          updatedEvents[selectedDate] = [];
+        }
+        updatedEvents[selectedDate].push(response.data);
+        return updatedEvents;
+      });
+
       closeModal();
     } catch (error) {
       console.error('Error saving event:', error);
@@ -165,31 +197,88 @@ const AdminCalendar = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4">
       {renderHeader()}
       {renderDays()}
       {renderCells()}
 
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg relative">
-            <button className="absolute top-0 right-0 m-2 text-lg" onClick={closeModal}>&times;</button>
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
+            <h2 className="text-lg font-bold mb-4">Add Event</h2>
             <form onSubmit={handleFormSubmit}>
-              <h2 className="text-xl mb-4">Add Event for {selectedDate}</h2>
-              <div className="mb-2">
-                <label className="block text-sm font-bold mb-1">Time</label>
-                <input type="text" name="time" className="w-full p-2 border rounded" required />
+              <div className="mb-4">
+                <label htmlFor="timeFrom" className="block text-sm font-medium text-gray-700">
+                  Time From
+                </label>
+                <input
+                  type="text"
+                  id="timeFrom"
+                  name="timeFrom"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  value={formValues.timeFrom}
+                  onChange={handleFormChange}
+                  placeholder="HH:MM AM/PM"
+                  required
+                />
               </div>
-              <div className="mb-2">
-                <label className="block text-sm font-bold mb-1">Title</label>
-                <input type="text" name="title" className="w-full p-2 border rounded" required />
+              <div className="mb-4">
+                <label htmlFor="timeTo" className="block text-sm font-medium text-gray-700">
+                  Time To
+                </label>
+                <input
+                  type="text"
+                  id="timeTo"
+                  name="timeTo"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  value={formValues.timeTo}
+                  onChange={handleFormChange}
+                  placeholder="HH:MM AM/PM"
+                  required
+                />
               </div>
-              <div className="mb-2">
-                <label className="block text-sm font-bold mb-1">Instructor</label>
-                <input type="text" name="instructor" className="w-full p-2 border rounded" required />
+              <div className="mb-4">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  value={formValues.title}
+                  onChange={handleFormChange}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="instructor" className="block text-sm font-medium text-gray-700">
+                  Instructor
+                </label>
+                <input
+                  type="text"
+                  id="instructor"
+                  name="instructor"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  value={formValues.instructor}
+                  onChange={handleFormChange}
+                  required
+                />
               </div>
               <div className="flex justify-end">
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Add Event</button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  Save
+                </button>
               </div>
             </form>
           </div>

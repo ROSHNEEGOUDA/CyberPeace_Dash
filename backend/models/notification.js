@@ -1,10 +1,12 @@
-// models/notification.js
 import mongoose from 'mongoose';
 
 const notificationSchema = new mongoose.Schema({
-  time: { type: Date, default: Date.now },
-  title: String,
-  instructor: String
+  date: { type: String, required: true },
+  timeFrom: { type: String, required: true }, // Update field name
+  timeTo: { type: String, required: true },   // Add timeTo field
+  title: { type: String, required: true },
+  instructor: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now } // Add createdAt field
 });
 
 const Notification = mongoose.model('Notification', notificationSchema);
